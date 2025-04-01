@@ -141,8 +141,8 @@ const Header = () => {
                         rel={item?.newTab ? "noopener noreferrer" : ""}
                         className={`flex rounded-full px-[14px] py-[3px] font-satoshi font-medium ${
                           pathUrl === item?.path
-                            ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
-                            : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
+                            ? "bg-primary text-red-700 dark:bg-white/5 dark:text-white"
+                            : "text-black hover:bg-primary-200/5 hover:text-primary-900 dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                         } ${item?.path?.startsWith("#") ? "menu-scroll" : ""}`}
                       >
                         {item?.title}
@@ -164,7 +164,7 @@ const Header = () => {
               </Link>
               <Link
                 href="#"
-                className="rounded-full bg-primary px-5 py-2 font-satoshi font-medium text-white hover:bg-primary-dark"
+                className="rounded-full bg-primary-900 px-5 py-2 font-satoshi font-medium text-white hover:bg-primary-700"
               >
                 Sign Up
               </Link>

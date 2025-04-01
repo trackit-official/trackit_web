@@ -41,5 +41,5 @@
 }
 
 .active {
-  @apply bg-primary/5 text-primary dark:bg-white/5 dark:text-white;
+  @apply bg-primary-100 text-primary-900 dark:bg-white/5 dark:text-white;
 }
