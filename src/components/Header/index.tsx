@@ -1,5 +1,7 @@
 "use client";
 import logoLight from "@/../public/images/logo/logo-light.svg";
+import Vector from "@/../public/images/logo/Vector.svg";
+import Vector2 from "@/../public/images/logo/Vector2.svg";
 import logo from "@/../public/images/logo/logo.svg";
 import { Menu } from "@/types/menu";
 import Image from "next/image";
@@ -60,9 +62,13 @@ const Header = () => {
               <Image
                 src={logoLight}
                 alt="Logo"
-                className="hidden w-full dark:block"
+                className="hidden w-full sm:w-[70%] md:w-[50%] dark:block"
               />
-              <Image src={logo} alt="Logo" className="w-full dark:hidden" />
+              <Image
+                src={Vector}
+                alt="Logo"
+                className="w-[30%] sm:w-[40%] md:w-[40%] dark:hidden"
+              />
             </Link>
 
             {/* <!-- Hamburger Toggle BTN --> */}
