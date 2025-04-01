@@ -60,7 +60,7 @@ const Header = () => {
           <div className="flex w-full items-center justify-between xl:w-4/12">
             <Link href="/">
               <Image
-                src={logoLight}
+                src={Vector}
                 alt="Logo"
                 className="hidden w-full sm:w-[70%] md:w-[50%] dark:block"
               />
