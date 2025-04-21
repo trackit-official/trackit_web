@@ -31,15 +31,14 @@ const Hero = () => {
         </h1>
 
         <p className="mx-auto font-satoshi mb-7.5 w-full max-w-[580px] text-lg text-justify -tracking-[0.2px] dark:text-gray-5">
-          Say goodbye to juggling multiple banking apps and hello to simplified
-          money management.
+          Simplify your finances by connecting all your accounts in one place. Track spending, set budgets, and achieve your financial goals with confidence.
         </p>
 
         <Link
           href="#"
-          className="inline-flex items-center gap-4 rounded-full bg-primary-900 py-2 pl-7.5 pr-2 font-satoshi font-medium text-white hover:bg-opacity-90 dark:bg-primary"
+          className="inline-flex items-center gap-4 rounded-full bg-primary-500 py-2 pl-7.5 pr-2 font-satoshi font-medium text-white hover:bg-primary-700 dark:bg-primary"
         >
-          <span> Get Started </span>
+          <span> Start Free Trial </span>
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-700 text-white dark:bg-white dark:text-primary">
             <svg
               className="fill-current"
@@ -65,7 +64,7 @@ const Hero = () => {
         <div className="mx-auto mt-20 w-full max-w-[1170px] px-4 sm:px-8 lg:mt-25 xl:mt-32.5 xl:px-0">
           <Image
             src={Phones}
-            alt="Brand recognition logos"
+            alt="Financial tracking app screenshots"
             height={200}
             className="mx-auto w-full"
           />

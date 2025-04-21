@@ -8,7 +8,7 @@ const FeatureItem = ({ data }: { data: FeatureItem }) => {
       <h3 className="mb-4.5 mt-7.5 font-satoshi text-2xl font-bold text-dark dark:text-white">
         {data.title}
       </h3>
-      <p className="dark:text-gray-5">{data.description}</p>
+      <p className="font-satoshi dark:text-gray-5">{data.description}</p>
     </div>
   );
 };
