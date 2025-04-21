@@ -39,13 +39,17 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Sign Up
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl p-10 shadow-lg">
+        <h1 className="text-3xl font-satoshi font-bold text-gray-900 dark:text-white mb-2">
+          Welcome to Trackiitt
         </h1>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <p className="text-gray-600 dark:text-gray-400 mb-8 font-satoshi">
+          Create your free account and take control of your finances.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Name
@@ -55,21 +59,23 @@ export default function SignUpPage() {
               type="text"
               required
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-primary-700 font-satoshi"
             />
           </div>
+          {/* Email input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email
+              Email address
             </label>
             <input
               name="email"
               type="email"
               required
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-primary-700 font-satoshi"
             />
           </div>
+          {/* Password input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Password
@@ -79,18 +85,20 @@ export default function SignUpPage() {
               type="password"
               required
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-primary-700 font-satoshi"
             />
           </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-500 hover:bg-primary-600 disabled:opacity-50"
+            className="w-full rounded-full bg-primary-500 py-3 text-center text-white font-satoshi font-medium shadow-md hover:bg-primary-600 transition disabled:opacity-50"
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? "Signing up..." : "Create Account"}
           </button>
         </form>
-        <p className="text-sm text-center text-gray-600 dark:text-gray-400">
+
+        <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           Already have an account?{" "}
           <Link
             href="/auth/signin"
