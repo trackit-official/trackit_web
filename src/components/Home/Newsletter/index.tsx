@@ -9,7 +9,7 @@ export default function Newsletter() {
             <h2 className="mb-5 font-satoshi text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-heading-2">
               Stay Updated on Finance Tips
             </h2>
-            <p className="mb-10 text-base text-body dark:text-gray-4">
+            <p className="mb-10 font-satoshi text-lg text-body dark:text-gray-4">
               Subscribe to our newsletter for the latest financial tips,
               money-saving strategies, and exclusive Trackiitt feature updates
               to help you manage your money better.

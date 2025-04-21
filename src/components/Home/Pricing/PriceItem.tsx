@@ -38,7 +38,7 @@ const PriceItem = ({ plan }: Props) => {
         </div>
         <div>
           <span
-            className={`block text-lg font-medium dark:text-gray-4 ${
+            className={`block text-lg font-satoshi font-medium dark:text-gray-4 ${
               active && "text-white"
             }`}
           >
@@ -54,7 +54,7 @@ const PriceItem = ({ plan }: Props) => {
         </div>
       </div>
 
-      <p className={active ? "text-white" : "dark:text-gray-4"}>
+      <p className={`font-satoshi ${active ? "text-white" : "dark:text-gray-4"}`}>
         {plan?.description}
       </p>
 
@@ -72,7 +72,7 @@ const PriceItem = ({ plan }: Props) => {
       >
         ${plan?.unit_amount / 100}
         <span
-          className={`ml-1 text-xl font-medium -tracking-[0.3px] ${
+          className={`ml-1 text-xl font-satoshi font-medium -tracking-[0.3px] ${
             active ? "text-white" : "text-gray-6 dark:text-white"
           }`}
         >
@@ -111,7 +111,7 @@ const PriceItem = ({ plan }: Props) => {
               </svg>
             </span>
             <span
-              className={active ? `text-white` : "text-black dark:text-white"}
+              className={`font-satoshi ${active ? `text-white` : "text-black dark:text-white"}`}
             >
               {feature}
             </span>

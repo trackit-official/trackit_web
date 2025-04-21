@@ -157,13 +157,13 @@ const Header = () => {
               <ThemeSwitcher />
 
               <Link
-                href="#"
+                href="/auth/signin"
                 className="px-5 py-2 font-satoshi font-medium text-black dark:text-white"
               >
                 Sign In
               </Link>
               <Link
-                href="#"
+                href="/auth/signup"
                 className="rounded-full bg-primary-900 px-5 py-2 font-satoshi font-medium text-white hover:bg-primary-700"
               >
                 Sign Up

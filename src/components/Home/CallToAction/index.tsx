@@ -8,7 +8,7 @@ const CallToAction = () => {
           Take Control of Your Finances
         </h2>
 
-        <p className="text-gray-2">
+        <p className="text-gray-2 font-satoshi">
           Connect your accounts, set your goals, and start tracking your
           financial journey today. Join thousands of users who have transformed
           their financial lives with Trackiitt.

@@ -31,7 +31,9 @@ const Hero = () => {
         </h1>
 
         <p className="mx-auto font-satoshi mb-7.5 w-full max-w-[580px] text-lg text-justify -tracking-[0.2px] dark:text-gray-5">
-          Simplify your finances by connecting all your accounts in one place. Track spending, set budgets, and achieve your financial goals with confidence.
+          Simplify your finances by connecting all your accounts in one place.
+          Track spending, set budgets, and achieve your financial goals with
+          confidence.
         </p>
 
         <Link

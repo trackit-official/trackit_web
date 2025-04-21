@@ -18,7 +18,7 @@ const Counter = () => {
 							<CountUp targetNumber={20} />
 							<span className='-ml-3'>+</span>
 						</h3>
-						<p className='text-lg font-medium -tracking-[0.2px]'>
+						<p className='text-lg font-medium -tracking-[0.2px] font-satoshi'>
 							Integrations
 						</p>
 					</div>
@@ -31,7 +31,7 @@ const Counter = () => {
 							<CountUp targetNumber={100} />
 							<span className='-ml-3'>+</span>
 						</h3>
-						<p className='text-lg font-medium -tracking-[0.2px]'>
+						<p className='text-lg font-medium -tracking-[0.2px] font-satoshi'>
 							UI Components and Pages
 						</p>
 					</div>
@@ -45,7 +45,7 @@ const Counter = () => {
 
 							<span className='-ml-3'>+</span>
 						</h3>
-						<p className='text-lg font-medium -tracking-[0.2px]'>USD Saved</p>
+						<p className='text-lg font-medium -tracking-[0.2px] font-satoshi'>USD Saved</p>
 					</div>
 				</div>
 			</div>
