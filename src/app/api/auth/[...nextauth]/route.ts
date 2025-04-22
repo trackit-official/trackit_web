@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/libs/prisma";
 import { compare } from "bcrypt";
+import { signInSchema } from "@/validation/auth";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -16,16 +17,18 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
-          throw new Error("Email and password required");
+        const parsed = signInSchema.safeParse(credentials || {});
+        if (!parsed.success) {
+          throw new Error(parsed.error.errors.map((e) => e.message).join(", "));
         }
+        const { email, password } = parsed.data;
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
         if (!user || !user.password) {
           throw new Error("Invalid email or password");
         }
-        const isValid = await compare(credentials.password, user.password);
+        const isValid = await compare(password, user.password);
         if (!isValid) {
           throw new Error("Invalid email or password");
         }
