@@ -16,25 +16,25 @@ const PriceItem = ({ plan }: Props) => {
 
   return (
     <div
-      className={`relative  rounded-[20px] p-10 shadow-dropdown ${
+      className={`relative rounded-[20px] p-10 shadow-dropdown transition-all duration-300 hover:shadow-xl ${
         active ? "bg-primary" : "bg-white dark:bg-gray-dark"
       }`}
     >
       {active && (
         <span
-          className={`absolute right-4.5 top-4.5 inline-flex rounded-[5px] px-3 py-[5px] font-satoshi font-medium  bg-white/10 text-white`}
+          className={`absolute right-4.5 top-4.5 inline-flex rounded-[5px] px-4 py-1.5 font-satoshi text-sm font-medium bg-white/10 text-white`}
         >
           Popular
         </span>
       )}
 
-      <div className="mb-7 flex items-center gap-5">
+      <div className="mb-8 flex items-center gap-5">
         <div
-          className={`flex h-18 w-full max-w-[72px] items-center justify-center rounded-2xl ${
+          className={`flex h-20 w-20 items-center justify-center rounded-2xl ${
             active ? "bg-white/10" : "bg-primary/10"
           }`}
         >
-          <Image src={plan?.icon} alt={plan?.nickname} width={34} height={34} />
+          <Image src={plan?.icon} alt={plan?.nickname} width={40} height={40} />
         </div>
         <div>
           <span
@@ -54,7 +54,9 @@ const PriceItem = ({ plan }: Props) => {
         </div>
       </div>
 
-      <p className={`font-satoshi ${active ? "text-white" : "dark:text-gray-4"}`}>
+      <p
+        className={`font-satoshi text-base mb-7 min-h-[60px] leading-relaxed ${active ? "text-white" : "dark:text-gray-4"}`}
+      >
         {plan?.description}
       </p>
 
@@ -66,7 +68,7 @@ const PriceItem = ({ plan }: Props) => {
       ></div>
 
       <h4
-        className={`mb-4.5 font-satoshi text-heading-4 font-bold leading-[1.22] lg:text-heading-2 xl:text-[54px] ${
+        className={`mb-5 font-satoshi text-heading-4 font-bold leading-[1.22] lg:text-heading-2 xl:text-[48px] ${
           active ? "text-white" : "text-[#170F49] dark:text-white"
         }`}
       >
@@ -81,20 +83,20 @@ const PriceItem = ({ plan }: Props) => {
       </h4>
 
       <h5
-        className={`mb-7.5 font-satoshi text-lg font-bold -tracking-[0.2px] dark:text-white ${
+        className={`mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] dark:text-white ${
           active ? "text-white" : "text-black"
         }`}
       >
-        What&apos;s included
+        What's included
       </h5>
 
-      <ul className="flex flex-col gap-3">
+      <ul className="flex flex-col gap-4 mb-8">
         {plan?.includes.map((feature, key) => (
           <li className="flex items-center gap-3" key={key}>
-            <span>
+            <span className="flex-shrink-0">
               <svg
-                width="22"
-                height="22"
+                width="24"
+                height="24"
                 viewBox="0 0 22 22"
                 fill="none"
                 className={
@@ -111,7 +113,7 @@ const PriceItem = ({ plan }: Props) => {
               </svg>
             </span>
             <span
-              className={`font-satoshi ${active ? `text-white` : "text-black dark:text-white"}`}
+              className={`font-satoshi text-base leading-relaxed ${active ? `text-white` : "text-gray-700 dark:text-gray-200"}`}
             >
               {feature}
             </span>
@@ -120,7 +122,7 @@ const PriceItem = ({ plan }: Props) => {
       </ul>
 
       <button
-        className={`mt-9 flex w-full justify-center rounded-full  p-3.5 font-satoshi font-medium ${activeStyle}`}
+        className={`mt-4 flex w-full justify-center rounded-full p-4 font-satoshi text-base font-medium transition-all duration-200 ${activeStyle} hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]`}
       >
         Get Started
       </button>

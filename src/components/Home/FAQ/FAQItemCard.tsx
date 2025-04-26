@@ -28,24 +28,27 @@ const FAQItemCard = ({
   return (
     <div
       data-faqid={id}
-      className={` flex flex-col rounded-[20px] ${
+      className={`flex flex-col rounded-[20px] transition-all duration-300 ${
         isActive
-          ? "bg-primary px-[35px] py-7 text-white"
-          : "bg-white px-[35px] py-7 shadow-solid-6 dark:bg-gray-dark"
+          ? "bg-primary px-[35px] py-7 text-white shadow-lg"
+          : "bg-white px-[35px] py-7 shadow-solid-6 dark:bg-gray-dark hover:shadow-lg"
       }`}
     >
       <button
         onClick={() => handleToggle(id)}
         className="flex w-full items-center justify-between"
       >
-        <span className="font-satoshi text-xl font-semibold">{title}</span>
-        <span>
+        <span className="font-satoshi text-xl font-semibold text-left pr-4">
+          {title}
+        </span>
+        <span className="flex-shrink-0">
           <svg
             width="18"
             height="18"
             viewBox="0 0 18 18"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className={`transition-transform duration-300 ${isActive ? "rotate-180" : ""}`}
           >
             <path
               d="M9 4V14"
@@ -73,9 +76,11 @@ const FAQItemCard = ({
         </span>
       </button>
       <div
-        className={`mt-5 overflow-hidden  ${isActive ? "max-h-96" : "max-h-0"}`}
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isActive ? "max-h-[500px] opacity-100 mt-5" : "max-h-0 opacity-0"
+        }`}
       >
-        <p className="font-satoshi">{text}</p>
+        <p className="font-satoshi text-base leading-relaxed">{text}</p>
       </div>
     </div>
   );
