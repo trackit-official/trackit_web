@@ -21,7 +21,6 @@ const Home = () => {
       <Pricing />
       <FAQ />
       <Newsletter />
-      <Blog />
     </>
   );
 };

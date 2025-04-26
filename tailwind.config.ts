@@ -70,7 +70,7 @@ const config: Config = {
           dark: "#394152",
         },
         primary: {
-          DEFAULT: "#635BFF",
+          DEFAULT: "#258c40",
           dark: "#3E22E9",
           100: "#e5fcdc",
           200: "#c7f9bb",

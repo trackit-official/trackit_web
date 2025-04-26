@@ -52,7 +52,7 @@ export default function Newsletter() {
             </button>
           </form>
 
-          <div className="text-center mt-5 text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-center font-satoshi mt-5 text-sm text-gray-500 dark:text-gray-400">
             <p>
               Join over{" "}
               <span className="text-primary-700 dark:text-primary-400 font-medium">
