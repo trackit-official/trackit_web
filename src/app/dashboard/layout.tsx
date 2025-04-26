@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,6 +10,15 @@ import { DashboardProviders } from "./providers";
 function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  // Handle logout
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await signOut({ redirect: false });
+    // NextAuth will automatically redirect to login page
+    // due to our middleware protection
+  };
 
   // Check if the user is authenticated
   if (status === "loading") {
@@ -159,16 +168,71 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
           </ul>
         </nav>
         <div className="absolute bottom-0 w-full border-t border-gray-200 px-6 py-4 dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                {session?.user?.name || "User"}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {session?.user?.email || "user@example.com"}
-              </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700">
+                {session?.user?.image && (
+                  <img
+                    src={session.user.image}
+                    alt="Profile"
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                )}
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {session?.user?.name || "User"}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {session?.user?.email || "user@example.com"}
+                </p>
+              </div>
             </div>
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="ml-2 rounded-md bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+              aria-label="Log out"
+              title="Log out"
+            >
+              {isLoggingOut ? (
+                <svg
+                  className="h-5 w-5 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              ) : (
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -214,6 +278,56 @@ function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
                   d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                 />
               </svg>
+            </button>
+            {/* Logout button for larger screens */}
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="hidden items-center rounded-md bg-gray-100 px-3 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 md:flex"
+            >
+              {isLoggingOut ? (
+                <span className="flex items-center">
+                  <svg
+                    className="mr-2 h-4 w-4 animate-spin"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Logging out...
+                </span>
+              ) : (
+                <>
+                  <svg
+                    className="mr-2 h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  Log Out
+                </>
+              )}
             </button>
           </div>
         </header>

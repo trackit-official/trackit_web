@@ -109,7 +109,7 @@ export default function SignInPage() {
     if (res?.error) {
       setErrorMessage(res.error);
     } else {
-      router.push("/");
+      router.push("/dashboard");
     }
   };
 
