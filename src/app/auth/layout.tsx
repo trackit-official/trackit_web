@@ -30,7 +30,7 @@ export default function AuthLayout({
     : "Join thousands of users managing their finances with Trackiitt";
 
   return (
-    <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+    <div className="flex flex-col md:flex-row min-h-screen">
       {/* Image Section - Hidden on mobile, 50% width on desktop */}
       <div className="hidden md:flex md:w-1/2 relative bg-primary-100 dark:bg-primary-900">
         <div className="absolute inset-0">
@@ -52,8 +52,8 @@ export default function AuthLayout({
       </div>
 
       {/* Form Section - Full width on mobile, 50% width on desktop */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-50 dark:bg-gray-900 overflow-y-auto">
-        <div className="w-full max-w-md px-6 py-8">{children}</div>
+      <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="w-full max-w-md px-6 py-12">{children}</div>
       </div>
     </div>
   );

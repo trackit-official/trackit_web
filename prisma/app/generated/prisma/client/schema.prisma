@@ -68,6 +68,12 @@ model User {
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
   createdAt              DateTime  @default(now())
+  // Security tracking fields
+  failedLoginAttempts    Int       @default(0)
+  lastFailedLoginAt      DateTime?
+  lastLoginAt            DateTime?
+  lastLoginIp            String?
+  userAgent              String?
   accounts               Account[]
   sessions               Session[]
   apiKeys                ApiKey[]

@@ -161,7 +161,12 @@ exports.Prisma.UserScalarFieldEnum = {
   stripeSubscriptionId: 'stripeSubscriptionId',
   stripePriceId: 'stripePriceId',
   stripeCurrentPeriodEnd: 'stripeCurrentPeriodEnd',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  failedLoginAttempts: 'failedLoginAttempts',
+  lastFailedLoginAt: 'lastFailedLoginAt',
+  lastLoginAt: 'lastLoginAt',
+  lastLoginIp: 'lastLoginIp',
+  userAgent: 'userAgent'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

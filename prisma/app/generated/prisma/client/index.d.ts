@@ -4573,8 +4573,18 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    failedLoginAttempts: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    failedLoginAttempts: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -4592,6 +4602,11 @@ export namespace Prisma {
     stripePriceId: string | null
     stripeCurrentPeriodEnd: Date | null
     createdAt: Date | null
+    failedLoginAttempts: number | null
+    lastFailedLoginAt: Date | null
+    lastLoginAt: Date | null
+    lastLoginIp: string | null
+    userAgent: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -4609,6 +4624,11 @@ export namespace Prisma {
     stripePriceId: string | null
     stripeCurrentPeriodEnd: Date | null
     createdAt: Date | null
+    failedLoginAttempts: number | null
+    lastFailedLoginAt: Date | null
+    lastLoginAt: Date | null
+    lastLoginIp: string | null
+    userAgent: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -4626,9 +4646,22 @@ export namespace Prisma {
     stripePriceId: number
     stripeCurrentPeriodEnd: number
     createdAt: number
+    failedLoginAttempts: number
+    lastFailedLoginAt: number
+    lastLoginAt: number
+    lastLoginIp: number
+    userAgent: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    failedLoginAttempts?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    failedLoginAttempts?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -4645,6 +4678,11 @@ export namespace Prisma {
     stripePriceId?: true
     stripeCurrentPeriodEnd?: true
     createdAt?: true
+    failedLoginAttempts?: true
+    lastFailedLoginAt?: true
+    lastLoginAt?: true
+    lastLoginIp?: true
+    userAgent?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -4662,6 +4700,11 @@ export namespace Prisma {
     stripePriceId?: true
     stripeCurrentPeriodEnd?: true
     createdAt?: true
+    failedLoginAttempts?: true
+    lastFailedLoginAt?: true
+    lastLoginAt?: true
+    lastLoginIp?: true
+    userAgent?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -4679,6 +4722,11 @@ export namespace Prisma {
     stripePriceId?: true
     stripeCurrentPeriodEnd?: true
     createdAt?: true
+    failedLoginAttempts?: true
+    lastFailedLoginAt?: true
+    lastLoginAt?: true
+    lastLoginIp?: true
+    userAgent?: true
     _all?: true
   }
 
@@ -4720,6 +4768,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -4750,6 +4810,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -4769,7 +4831,14 @@ export namespace Prisma {
     stripePriceId: string | null
     stripeCurrentPeriodEnd: Date | null
     createdAt: Date
+    failedLoginAttempts: number
+    lastFailedLoginAt: Date | null
+    lastLoginAt: Date | null
+    lastLoginIp: string | null
+    userAgent: string | null
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -4803,6 +4872,11 @@ export namespace Prisma {
     stripePriceId?: boolean
     stripeCurrentPeriodEnd?: boolean
     createdAt?: boolean
+    failedLoginAttempts?: boolean
+    lastFailedLoginAt?: boolean
+    lastLoginAt?: boolean
+    lastLoginIp?: boolean
+    userAgent?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
@@ -4824,6 +4898,11 @@ export namespace Prisma {
     stripePriceId?: boolean
     stripeCurrentPeriodEnd?: boolean
     createdAt?: boolean
+    failedLoginAttempts?: boolean
+    lastFailedLoginAt?: boolean
+    lastLoginAt?: boolean
+    lastLoginIp?: boolean
+    userAgent?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4841,6 +4920,11 @@ export namespace Prisma {
     stripePriceId?: boolean
     stripeCurrentPeriodEnd?: boolean
     createdAt?: boolean
+    failedLoginAttempts?: boolean
+    lastFailedLoginAt?: boolean
+    lastLoginAt?: boolean
+    lastLoginIp?: boolean
+    userAgent?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -4858,9 +4942,14 @@ export namespace Prisma {
     stripePriceId?: boolean
     stripeCurrentPeriodEnd?: boolean
     createdAt?: boolean
+    failedLoginAttempts?: boolean
+    lastFailedLoginAt?: boolean
+    lastLoginAt?: boolean
+    lastLoginIp?: boolean
+    userAgent?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "passwordResetToken" | "passwordResetTokenExp" | "role" | "stripeCustomerId" | "stripeSubscriptionId" | "stripePriceId" | "stripeCurrentPeriodEnd" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "passwordResetToken" | "passwordResetTokenExp" | "role" | "stripeCustomerId" | "stripeSubscriptionId" | "stripePriceId" | "stripeCurrentPeriodEnd" | "createdAt" | "failedLoginAttempts" | "lastFailedLoginAt" | "lastLoginAt" | "lastLoginIp" | "userAgent", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -4892,6 +4981,11 @@ export namespace Prisma {
       stripePriceId: string | null
       stripeCurrentPeriodEnd: Date | null
       createdAt: Date
+      failedLoginAttempts: number
+      lastFailedLoginAt: Date | null
+      lastLoginAt: Date | null
+      lastLoginIp: string | null
+      userAgent: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -5332,6 +5426,11 @@ export namespace Prisma {
     readonly stripePriceId: FieldRef<"User", 'String'>
     readonly stripeCurrentPeriodEnd: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
+    readonly failedLoginAttempts: FieldRef<"User", 'Int'>
+    readonly lastFailedLoginAt: FieldRef<"User", 'DateTime'>
+    readonly lastLoginAt: FieldRef<"User", 'DateTime'>
+    readonly lastLoginIp: FieldRef<"User", 'String'>
+    readonly userAgent: FieldRef<"User", 'String'>
   }
     
 
@@ -6859,7 +6958,12 @@ export namespace Prisma {
     stripeSubscriptionId: 'stripeSubscriptionId',
     stripePriceId: 'stripePriceId',
     stripeCurrentPeriodEnd: 'stripeCurrentPeriodEnd',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    failedLoginAttempts: 'failedLoginAttempts',
+    lastFailedLoginAt: 'lastFailedLoginAt',
+    lastLoginAt: 'lastLoginAt',
+    lastLoginIp: 'lastLoginIp',
+    userAgent: 'userAgent'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -7179,6 +7283,11 @@ export namespace Prisma {
     stripePriceId?: StringNullableFilter<"User"> | string | null
     stripeCurrentPeriodEnd?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
+    failedLoginAttempts?: IntFilter<"User"> | number
+    lastFailedLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastLoginIp?: StringNullableFilter<"User"> | string | null
+    userAgent?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
@@ -7199,6 +7308,11 @@ export namespace Prisma {
     stripePriceId?: SortOrderInput | SortOrder
     stripeCurrentPeriodEnd?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    failedLoginAttempts?: SortOrder
+    lastFailedLoginAt?: SortOrderInput | SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    lastLoginIp?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     apiKeys?: ApiKeyOrderByRelationAggregateInput
@@ -7222,6 +7336,11 @@ export namespace Prisma {
     stripePriceId?: StringNullableFilter<"User"> | string | null
     stripeCurrentPeriodEnd?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
+    failedLoginAttempts?: IntFilter<"User"> | number
+    lastFailedLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastLoginIp?: StringNullableFilter<"User"> | string | null
+    userAgent?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
@@ -7242,9 +7361,16 @@ export namespace Prisma {
     stripePriceId?: SortOrderInput | SortOrder
     stripeCurrentPeriodEnd?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    failedLoginAttempts?: SortOrder
+    lastFailedLoginAt?: SortOrderInput | SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    lastLoginIp?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -7265,6 +7391,11 @@ export namespace Prisma {
     stripePriceId?: StringNullableWithAggregatesFilter<"User"> | string | null
     stripeCurrentPeriodEnd?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    failedLoginAttempts?: IntWithAggregatesFilter<"User"> | number
+    lastFailedLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    lastLoginIp?: StringNullableWithAggregatesFilter<"User"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
@@ -7537,6 +7668,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
@@ -7557,6 +7693,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
@@ -7577,6 +7718,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
@@ -7597,6 +7743,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
@@ -7617,6 +7768,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -7634,6 +7790,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -7651,6 +7812,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
@@ -7944,6 +8110,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -7989,6 +8166,15 @@ export namespace Prisma {
     stripePriceId?: SortOrder
     stripeCurrentPeriodEnd?: SortOrder
     createdAt?: SortOrder
+    failedLoginAttempts?: SortOrder
+    lastFailedLoginAt?: SortOrder
+    lastLoginAt?: SortOrder
+    lastLoginIp?: SortOrder
+    userAgent?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    failedLoginAttempts?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -8006,6 +8192,11 @@ export namespace Prisma {
     stripePriceId?: SortOrder
     stripeCurrentPeriodEnd?: SortOrder
     createdAt?: SortOrder
+    failedLoginAttempts?: SortOrder
+    lastFailedLoginAt?: SortOrder
+    lastLoginAt?: SortOrder
+    lastLoginIp?: SortOrder
+    userAgent?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -8023,6 +8214,15 @@ export namespace Prisma {
     stripePriceId?: SortOrder
     stripeCurrentPeriodEnd?: SortOrder
     createdAt?: SortOrder
+    failedLoginAttempts?: SortOrder
+    lastFailedLoginAt?: SortOrder
+    lastLoginAt?: SortOrder
+    lastLoginIp?: SortOrder
+    userAgent?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    failedLoginAttempts?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8037,6 +8237,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
@@ -8171,6 +8387,14 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -8418,6 +8642,33 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -8433,6 +8684,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
   }
@@ -8452,6 +8708,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
   }
@@ -8487,6 +8748,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
   }
@@ -8506,6 +8772,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -8525,6 +8796,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
   }
@@ -8544,6 +8820,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
   }
@@ -8579,6 +8860,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
   }
@@ -8598,6 +8884,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -8617,6 +8908,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -8636,6 +8932,11 @@ export namespace Prisma {
     stripePriceId?: string | null
     stripeCurrentPeriodEnd?: Date | string | null
     createdAt?: Date | string
+    failedLoginAttempts?: number
+    lastFailedLoginAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    userAgent?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -8671,6 +8972,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -8690,6 +8996,11 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeCurrentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginAttempts?: IntFieldUpdateOperationsInput | number
+    lastFailedLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
