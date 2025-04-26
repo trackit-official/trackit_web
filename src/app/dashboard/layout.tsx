@@ -4,12 +4,10 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { DashboardProviders } from "./providers";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Inner component that uses the session
+function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -223,5 +221,18 @@ export default function DashboardLayout({
         <main className="container mx-auto p-6">{children}</main>
       </div>
     </div>
+  );
+}
+
+// Wrapper component that provides the session
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <DashboardProviders>
+      <DashboardLayoutInner>{children}</DashboardLayoutInner>
+    </DashboardProviders>
   );
 }
