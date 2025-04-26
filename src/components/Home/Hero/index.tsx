@@ -5,11 +5,11 @@ import Link from "next/link";
 import Phones from "../../../../public/images/hero/Group 1.png";
 const Hero = () => {
   return (
-    <section className="relative z-1 overflow-hidden pb-17.5 pt-30 lg:pb-20 lg:pt-30 xl:pb-25 xl:pt-[170px]">
+    <section className="relative z-1 overflow-hidden pb-17.5 pt-30 lg:pb-20 lg:pt-30 xl:pb-25 xl:pt-[170px] bg-gradient-to-br from-gray-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-primary-900/10">
       <div className="mx-auto w-full max-w-[740px] px-4 text-center sm:px-8 xl:px-0">
-        <h1 className="mb-5 font-satoshi text-heading-4 font-bold -tracking-[1.6px] text-black dark:text-white lg:text-heading-2 xl:text-[58px] xl:leading-[1.12]">
+        <h1 className="mb-5 font-satoshi text-heading-4 font-bold -tracking-[1.6px] text-black dark:text-white lg:text-heading-2 xl:text-[58px] xl:leading-[1.12] animate-fade-in">
           Track{" "}
-          <span className="relative text-primary-900">
+          <span className="relative text-primary-900 dark:text-primary-500">
             Every Naira.{" "}
             <span className="absolute bottom-0.5 left-0 h-2 w-full pl-1 pr-2">
               <svg
@@ -30,7 +30,7 @@ const Hero = () => {
           </span>
         </h1>
 
-        <p className="mx-auto font-satoshi mb-7.5 w-full max-w-[580px] text-lg text-justify -tracking-[0.2px] dark:text-gray-5">
+        <p className="mx-auto font-satoshi mb-7.5 w-full max-w-[580px] text-lg text-justify -tracking-[0.2px] dark:text-gray-300 leading-relaxed">
           Simplify your finances by connecting all your accounts in one place.
           Track spending, set budgets, and achieve your financial goals with
           confidence.
@@ -38,7 +38,7 @@ const Hero = () => {
 
         <Link
           href="#"
-          className="inline-flex items-center gap-4 rounded-full bg-primary-500 py-2 pl-7.5 pr-2 font-satoshi font-medium text-white hover:bg-primary-700 dark:bg-primary"
+          className="inline-flex items-center gap-4 rounded-full bg-primary-500 py-2 pl-7.5 pr-2 font-satoshi font-medium text-white hover:bg-primary-700 dark:bg-primary hover:shadow-lg transition-all duration-300"
         >
           <span> Start Free Trial </span>
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-700 text-white dark:bg-white dark:text-primary">
@@ -64,12 +64,15 @@ const Hero = () => {
       <div className="mx-auto mt-20 w-full max-w-[1170px] px-4 sm:px-8 lg:mt-25 xl:mt-32.5 xl:px-0">
         {/* <!-- Brand recognition section --> */}
         <div className="mx-auto mt-20 w-full max-w-[1170px] px-4 sm:px-8 lg:mt-25 xl:mt-32.5 xl:px-0">
-          <Image
-            src={Phones}
-            alt="Financial tracking app screenshots"
-            height={200}
-            className="mx-auto w-full"
-          />
+          <div className="relative">
+            <div className="absolute -top-10 left-1/2 w-40 h-40 bg-primary-300/20 rounded-full blur-3xl -translate-x-1/2 dark:bg-primary-900/20"></div>
+            <Image
+              src={Phones}
+              alt="Financial tracking app screenshots"
+              height={200}
+              className="mx-auto w-full hover:scale-105 transition-transform duration-700 drop-shadow-xl"
+            />
+          </div>
         </div>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-7.5 xl:gap-16">
           {/* <!-- brand item --> */}
@@ -78,7 +81,7 @@ const Hero = () => {
               key={key}
               href={brand.link}
               aria-label={brand.name}
-              className="text-dark-4 duration-300 ease-in-out hover:text-dark-3 dark:hover:text-white"
+              className="text-dark-4 duration-300 ease-in-out hover:text-dark-3 dark:hover:text-white opacity-70 hover:opacity-100"
             >
               {brand.image}
             </Link>
@@ -88,7 +91,7 @@ const Hero = () => {
 
       {/* <!-- Hero Bg Shapes --> */}
       <div className="hidden sm:block">
-        <div className="absolute left-0 top-0 -z-1">
+        <div className="absolute left-0 top-0 -z-1 opacity-70">
           <Image
             src="/images/hero/hero-shape-01.svg"
             alt="shape"
@@ -96,7 +99,7 @@ const Hero = () => {
             height={480}
           />
         </div>
-        <div className="absolute right-0 top-0 -z-1">
+        <div className="absolute right-0 top-0 -z-1 opacity-70">
           <Image
             src="/images/hero/hero-shape-02.svg"
             alt="shape"
