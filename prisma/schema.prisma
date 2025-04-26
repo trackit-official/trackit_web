@@ -2,10 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-//   directUrl = env("DIRECT_URL")
-  //   shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -13,10 +11,7 @@ generator client {
   output   = "app/generated/prisma/client"
 }
 
-// model Test {
-//   id    Int     @id @default(autoincrement())
-// }
-
+// Authentication Models - Required for NextAuth
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -44,39 +39,39 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model ApiKey {
-  id        String   @id @default(cuid())
-  key       String
-  name      String   @unique
-  userId    String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model User {
-  id                     String    @id @default(cuid())
-  name                   String?
-  email                  String?   @unique
-  emailVerified          DateTime?
-  image                  String?
-  password               String?
-  passwordResetToken     String?   @unique
-  passwordResetTokenExp  DateTime?
-  role                   String?   @default("USER")
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-  createdAt              DateTime  @default(now())
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String?   @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  passwordResetToken  String?   @unique
+  passwordResetTokenExp DateTime?
+  role                String    @default("USER")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
   // Security tracking fields
-  failedLoginAttempts    Int       @default(0)
-  lastFailedLoginAt      DateTime?
-  lastLoginAt            DateTime?
-  lastLoginIp            String?
-  userAgent              String?
-  accounts               Account[]
-  sessions               Session[]
-  apiKeys                ApiKey[]
+  failedLoginAttempts Int       @default(0)
+  lastFailedLoginAt   DateTime?
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+  userAgent           String?
+
+  // User preferences
+  defaultCurrency     String    @default("NGN")
+  timezone            String    @default("Africa/Lagos")
+  notificationPrefs   Json?     // Stores notification preferences as JSON
+
+  // Relations
+  accounts            Account[]
+  sessions            Session[]
+  apiKeys             ApiKey[]
+  bankAccounts        BankAccount[]
+  transactions        Transaction[]
+  categories          Category[]
+  budgets             Budget[]
 }
 
 model VerificationToken {
@@ -86,4 +81,154 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  key       String
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+}
+
+// Finance tracking models
+model BankAccount {
+  id              String    @id @default(cuid())
+  userId          String
+  accountName     String
+  accountNumber   String?
+  bankName        String
+  balance         Float
+  currency        String    @default("NGN")
+  isActive        Boolean   @default(true)
+  lastSynced      DateTime?
+
+  // Mono integration fields
+  monoId          String?   @unique // Mono account ID
+  monoAccountId   String?   // Mono account identification
+  monoAccessToken String?   @db.Text
+  monoReauthToken String?   @db.Text
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions    Transaction[]
+
+  @@index([userId])
+}
+
+model Transaction {
+  id              String    @id @default(cuid())
+  userId          String
+  accountId       String
+  amount          Float
+  type            TransactionType
+  description     String
+  category        String?
+  reference       String?
+  date            DateTime
+  balance         Float?
+  currency        String    @default("NGN")
+
+  // For duplicate prevention
+  externalId      String?   @unique // ID from bank/Mono
+
+  // Transaction metadata
+  metadata        Json?
+  notes           String?   @db.Text
+  tags            String[]
+
+  // Categorization
+  categoryId      String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account         BankAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  transactionCategory Category? @relation(fields: [categoryId], references: [id])
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([categoryId])
+  @@index([date])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  userId      String
+  name        String
+  color       String    @default("#000000")
+  icon        String?
+  type        TransactionType
+  isDefault   Boolean   @default(false)
+  isSystem    Boolean   @default(false) // System-defined categories cannot be deleted
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  budgets     Budget[]
+
+  @@unique([userId, name, type])
+  @@index([userId])
+}
+
+model Budget {
+  id          String    @id @default(cuid())
+  userId      String
+  name        String
+  amount      Float
+  categoryId  String
+  period      BudgetPeriod
+  startDate   DateTime
+  endDate     DateTime?
+  isRecurring Boolean   @default(false)
+  isActive    Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([categoryId])
+}
+
+// Optional: Notification model if you're implementing the notification system
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String
+  title       String
+  message     String
+  type        String    // e.g., "transaction", "budget_alert", "system"
+  isRead      Boolean   @default(false)
+  data        Json?     // Additional context data
+
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Enums
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum BudgetPeriod {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+  CUSTOM
 }
