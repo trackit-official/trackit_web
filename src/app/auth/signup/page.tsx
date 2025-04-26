@@ -13,6 +13,9 @@ import { z } from "zod";
 type SignUpFormData = z.infer<typeof signUpSchema>;
 type ErrorResponse = {
   error: string;
+  message?: string;
+  details?: string[];
+  errorId?: string;
 };
 
 export default function SignUpPage() {
@@ -53,28 +56,82 @@ export default function SignUpPage() {
       if (res?.error) throw new Error(res.error);
       router.push("/");
     } catch (err: unknown) {
-      let errorMessage = "Signup failed";
+      console.error("Signup error:", err);
+      let errorMessage = "Signup failed. Please try again.";
+      let errorDetails: string[] = [];
 
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      } else if (axios.isAxiosError(err)) {
+      // Handle Axios errors first to override any default messages
+      if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError<ErrorResponse>;
-        errorMessage = axiosError.response?.data?.error || "Signup failed";
+        console.log("Error response data:", axiosError.response?.data);
+        const responseData = axiosError.response?.data;
+
+        // Use the message field if present, otherwise fallback to error
+        if (responseData?.message) {
+          errorMessage = responseData.message;
+        } else if (responseData?.error) {
+          errorMessage = responseData.error;
+        }
+
+        // Collect detailed validation errors
+        if (responseData?.details && responseData.details.length > 0) {
+          errorDetails = responseData.details;
+        }
+
+        // Specific errorId handling
+        switch (responseData?.errorId) {
+          case "EMAIL_EXISTS":
+            errorMessage =
+              "This email address is already registered. Please sign in instead.";
+            break;
+          case "VALIDATION_ERROR":
+            errorMessage = "Please check your information and try again.";
+            break;
+          case "RATE_LIMIT_EXCEEDED":
+            errorMessage = "Too many signup attempts. Please try again later.";
+            break;
+        }
+
+        // Fallback based on status code
+        if (!responseData && axiosError.response) {
+          if (axiosError.response.status === 409) {
+            errorMessage =
+              "Email already in use. Please use a different email or sign in.";
+          } else if (axiosError.response.statusText) {
+            errorMessage = `Error: ${axiosError.response.statusText}`;
+          }
+        }
+      } else if (err instanceof Error) {
+        // Generic error
+        errorMessage = err.message;
       }
+
+      console.log(errorMessage, errorDetails);
 
       toast.error(
         (t) => (
-          <div className="flex items-center gap-2">
-            <span>{errorMessage}</span>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="px-2 py-1 bg-red-100 dark:bg-red-800 rounded text-xs"
-            >
-              Dismiss
-            </button>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{errorMessage}</span>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="px-2 py-1 bg-red-100 dark:bg-red-800 rounded text-xs ml-2"
+              >
+                Dismiss
+              </button>
+            </div>
+            {errorDetails.length > 0 && (
+              <ul className="list-disc list-inside text-sm mt-1 pl-2">
+                {errorDetails.map((detail, idx) => (
+                  <li key={idx} className="text-xs">
+                    {detail}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         ),
-        { duration: 5000 }
+        { duration: 7000 }
       );
     }
   };
@@ -168,9 +225,15 @@ export default function SignUpPage() {
               </button>
             </div>
             {errors.password && (
-              <p className="mt-1 text-xs text-red-600">
-                {errors.password.message}
-              </p>
+              <div className="mt-1">
+                <p className="text-xs text-red-600 font-medium mb-1">
+                  {errors.password.message}
+                </p>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  Password must include at least 10 characters, uppercase,
+                  lowercase, number, and special character.
+                </div>
+              </div>
             )}
           </div>
 

@@ -3,46 +3,21 @@ import { NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 import { hash } from "bcrypt";
 import logger from "@/libs/logger";
-import { checkRateLimit, getClientIp } from "@/libs/ratelimit";
-import { headers } from "next/headers";
+import { getClientIp, getUserAgent } from "@/libs/ratelimit";
 
 // Define error structure for consistent responses
 interface ErrorResponse {
   error: string;
+  message: string;
   errorId?: string;
   details?: string[];
 }
 
 export async function POST(request: Request) {
   const clientIp = getClientIp();
-  const userAgent = headers().get("user-agent") || "unknown";
+  const userAgent = getUserAgent();
 
   try {
-    // Check rate limit before processing the request
-    const rateLimitResult = await checkRateLimit("signup");
-    if (!rateLimitResult.success) {
-      logger.warn({
-        message: "Rate limit exceeded for signup",
-        ip: clientIp,
-        userAgent,
-        remaining: rateLimitResult.limit - rateLimitResult.current,
-        resetAt: new Date(rateLimitResult.reset),
-      });
-
-      return NextResponse.json(
-        {
-          error: "Too many signup attempts. Please try again later.",
-          errorId: "RATE_LIMIT_EXCEEDED",
-        } as ErrorResponse,
-        {
-          status: 429,
-          headers: {
-            "Retry-After": `${Math.ceil((rateLimitResult.reset - Date.now()) / 1000)}`,
-          },
-        }
-      );
-    }
-
     const body = await request.json();
     const parsed = signUpSchema.safeParse(body);
 
@@ -59,6 +34,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error: "Validation failed",
+          message: "Please check your information and try again.",
           errorId: "VALIDATION_ERROR",
           details: errors,
         } as ErrorResponse,
@@ -74,19 +50,21 @@ export async function POST(request: Request) {
         message: "Signup attempt with existing email",
         ip: clientIp,
         userAgent,
-        email, // We can log the email here as it already exists in our system
+        email,
       });
 
       return NextResponse.json(
         {
           error: "Email already in use",
+          message:
+            "The email address is already registered. Please use a different email or sign in.",
           errorId: "EMAIL_EXISTS",
         } as ErrorResponse,
         { status: 409 }
       );
     }
 
-    // Use stronger hashing (increased from 10 to 12 rounds)
+    // Use stronger hashing (12 rounds)
     const hashed = await hash(password, 12);
 
     const newUser = await prisma.user.create({
@@ -94,8 +72,6 @@ export async function POST(request: Request) {
         name,
         email,
         password: hashed,
-        lastLoginIp: clientIp,
-        userAgent: userAgent.substring(0, 255), // Limit string length for database
       },
     });
 
@@ -106,19 +82,13 @@ export async function POST(request: Request) {
       userAgent,
     });
 
-    // Return success response with CSRF token
+    // Return success response
     return NextResponse.json(
       {
         message: "User registered successfully",
         userId: newUser.id,
       },
-      {
-        status: 201,
-        headers: {
-          // Using a header to help prevent CSRF attacks
-          "X-CSRF-Token": require("crypto").randomBytes(64).toString("hex"),
-        },
-      }
+      { status: 201 }
     );
   } catch (error: any) {
     // Generate a unique error ID for traceability
@@ -137,6 +107,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error: "An unexpected error occurred",
+        message:
+          "We encountered a problem while processing your signup. Please try again later.",
         errorId,
       } as ErrorResponse,
       { status: 500 }
