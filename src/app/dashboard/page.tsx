@@ -2,9 +2,61 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Connect from "@mono.co/connect.js";
+import { useState, useCallback } from "react"; // Added useState and useCallback
+import { monoPublicKey } from "@/config/monoConfig"; // Import monoPublicKey
 
 export default function DashboardPage() {
   const { data: session } = useSession();
+  // const [scriptLoaded, setScriptLoaded] = useState(false); // Script loaded state if needed for onLoad callback
+
+  const openMonoWidget = useCallback(async () => {
+    if (!monoPublicKey) {
+      console.error(
+        "Mono public key is not configured. Please check your environment variables."
+      );
+      // Optionally, display a user-friendly error message here (e.g., using a toast notification)
+      return;
+    }
+
+    try {
+      const MonoConnect = (await import("@mono.co/connect.js")).default;
+
+      const monoInstance = new MonoConnect({
+        key: monoPublicKey,
+        onClose: () => console.log("Mono Widget closed"),
+        onLoad: () => {
+          console.log("Mono Widget loaded successfully");
+        },
+        onSuccess: async ({ code }: { code: string }): Promise<void> => {
+          console.log(`Linked successfully, authorization code: ${code}`);
+          // TODO: Send the code to your backend to exchange it for an account ID
+          // try {
+          //   const response = await fetch('/api/mono/exchange-token', {
+          //     method: 'POST',
+          //     headers: { 'Content-Type': 'application/json' },
+          //     body: JSON.stringify({ public_token: code }),
+          //   });
+          //   const data = await response.json();
+          //   if (response.ok) {
+          //     console.log("Token exchanged successfully:", data);
+          //     // Trigger a data refresh or update UI
+          //   } else {
+          //     console.error("Failed to exchange token:", data.error);
+          //   }
+          // } catch (error) {
+          //   console.error("Error exchanging token:", error);
+          // }
+        },
+      });
+
+      monoInstance.setup();
+      monoInstance.open();
+    } catch (error) {
+      console.error("Failed to initialize or open Mono widget:", error);
+      // Optionally, display a user-friendly error message here
+    }
+  }, []);
 
   return (
     <div>
@@ -144,9 +196,10 @@ export default function DashboardPage() {
               Securely connect your bank accounts to start tracking your
               finances automatically.
             </p>
-            <Link
-              href="/dashboard/accounts/connect"
-              className="mt-auto inline-flex items-center text-primary-600 hover:underline dark:text-primary-400"
+            <button
+              type="button" // Explicitly set type to button
+              onClick={openMonoWidget}
+              className="mt-auto inline-flex items-center justify-center text-primary-600 hover:underline dark:text-primary-400 font-medium py-2 px-4 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/40 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-150"
             >
               Connect account
               <svg
@@ -163,7 +216,7 @@ export default function DashboardPage() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </Link>
+            </button>
           </div>
 
           <div className="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800/50">
