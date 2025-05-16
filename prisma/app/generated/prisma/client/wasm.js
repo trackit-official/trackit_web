@@ -195,7 +195,7 @@ exports.Prisma.BankAccountScalarFieldEnum = {
   status: 'status',
   monoDataStatus: 'monoDataStatus',
   authMethod: 'authMethod',
-  monoReauthToken: 'monoReauthToken',
+  reauthToken: 'reauthToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -6,6 +6,9 @@ import { Button } from "../ui/button";
 
 interface MonoConnectButtonProps {
   onSuccess: (data: { code: string }) => void;
+  onClose?: () => void; // Optional: Callback for when the widget is closed
+  onLoad?: () => void; // Optional: Callback for when the widget is loaded
+  reauth_token?: string; // For re-authentication
   text?: string;
   className?: string;
   disabled?: boolean;
@@ -20,6 +23,9 @@ interface MonoConnectButtonProps {
 
 export default function MonoConnectButton({
   onSuccess,
+  onClose,
+  onLoad,
+  reauth_token,
   text = "Link Your Bank Account",
   className = "",
   disabled = false,
@@ -31,9 +37,17 @@ export default function MonoConnectButton({
     // Initialize Mono Connect
     const monoConnect = new MonoConnect({
       key: process.env.NEXT_PUBLIC_MONO_PUBLIC_KEY || "",
-      onClose: () => console.log("Widget closed"),
-      onLoad: () => console.log("Widget loaded successfully"),
+      onClose: () => {
+        console.log("Widget closed");
+        if (onClose) onClose();
+      },
+      onLoad: () => {
+        console.log("Widget loaded successfully");
+        if (onLoad) onLoad();
+      },
       onSuccess,
+      // Add reauth_token if provided
+      ...(reauth_token && { reauth_token }),
     });
 
     setMonoInstance(monoConnect);
@@ -41,7 +55,7 @@ export default function MonoConnectButton({
     return () => {
       // Clean up mono instance if needed
     };
-  }, [onSuccess]);
+  }, [onSuccess, onClose, onLoad, reauth_token]);
 
   const handleConnectClick = () => {
     if (monoInstance) {

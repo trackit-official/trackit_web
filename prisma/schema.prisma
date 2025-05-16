@@ -108,14 +108,12 @@ model BankAccount {
 
   // Mono integration fields
   monoId          String?   @unique // Mono account ID from exchangeToken (auth.id)
-  // monoAccountId   String?   // This is likely redundant if monoId is the main identifier from Mono
   accountHolderName String?   // From Mono Identity
   bvn             String?   // From Mono Identity
   status          String?   // e.g., ACTIVE, REAUTH_REQUIRED, SYNCED, UNLINKED, SYNC_FAILED
   monoDataStatus  String?   // From Mono meta.data_status (e.g., AVAILABLE, PROCESSING, FAILED)
   authMethod      String?   // From Mono meta.auth_method (e.g., internet_banking, mobile_banking)
-  // monoAccessToken String?   @db.Text // Initial code from widget; consider if needed long-term
-  monoReauthToken String?   @db.Text // For re-initiating Mono Connect for re-authentication
+  reauthToken     String?   @db.Text // Renamed from monoReauthToken for consistency
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

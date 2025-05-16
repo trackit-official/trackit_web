@@ -1,115 +1,137 @@
-import { signUpSchema } from "@/validation/auth";
-import { NextResponse } from "next/server";
-import prisma from "@/libs/prisma";
-import { hash } from "bcrypt";
-import logger from "@/libs/logger";
-import { getClientIp, getUserAgent } from "@/libs/ratelimit";
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import prisma from "@/libs/prisma"; // This should now point to the correctly generated client
+import { z } from "zod";
+import { randomUUID } from "crypto"; // For generating unique error IDs
 
-// Define error structure for consistent responses
+// Define a schema for input validation
+const UserSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
+  name: z.string().min(1, { message: "Name is required" }),
+});
+
 interface ErrorResponse {
-  error: string;
+  errorId: string;
   message: string;
-  errorId?: string;
-  details?: string[];
+  details?: Record<string, string[]>; // For field-specific errors
 }
 
-export async function POST(request: Request) {
-  const clientIp = getClientIp();
-  const userAgent = getUserAgent();
-
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const parsed = signUpSchema.safeParse(body);
+    const validation = UserSchema.safeParse(body);
 
-    if (!parsed.success) {
-      const errors = parsed.error.errors.map((e) => e.message);
-
-      logger.info({
-        message: "Signup validation failed",
-        ip: clientIp,
-        userAgent,
-        errors,
-      });
-
+    if (!validation.success) {
+      const errorId = randomUUID();
+      console.error(
+        `[${errorId}] Signup validation error:`,
+        validation.error.flatten().fieldErrors
+      );
       return NextResponse.json(
         {
-          error: "Validation failed",
-          message: "Please check your information and try again.",
-          errorId: "VALIDATION_ERROR",
-          details: errors,
+          errorId,
+          message: "Validation failed. Please check your input.",
+          details: validation.error.flatten().fieldErrors,
         } as ErrorResponse,
         { status: 400 }
       );
     }
 
-    const { name, email, password } = parsed.data;
+    const { email, password, name } = validation.data;
 
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      logger.info({
-        message: "Signup attempt with existing email",
-        ip: clientIp,
-        userAgent,
-        email,
-      });
-
+    // Check if user already exists by email
+    const existingUserByEmail = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (existingUserByEmail) {
+      const errorId = randomUUID();
+      console.warn(`[${errorId}] Signup attempt with existing email:`, email);
       return NextResponse.json(
         {
-          error: "Email already in use",
-          message:
-            "The email address is already registered. Please use a different email or sign in.",
-          errorId: "EMAIL_EXISTS",
+          errorId,
+          message: "An account with this email already exists.",
         } as ErrorResponse,
-        { status: 409 }
+        { status: 409 } // 409 Conflict
       );
     }
 
-    // Use stronger hashing (12 rounds)
-    const hashed = await hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await prisma.user.create({
+    // Capture IP and User-Agent
+    // Prefer x-forwarded-for, then x-real-ip, then null if neither is present.
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      request.headers.get("x-real-ip") ||
+      null;
+    const userAgent = request.headers.get("user-agent");
+
+    const user = await prisma.user.create({
       data: {
-        name,
         email,
-        password: hashed,
+        password: hashedPassword, // Field in schema is 'password' for the hash
+        name,
+        emailVerified: new Date(), // Consider sending a verification email instead
+        lastLoginIp: ip,
+        userAgent: userAgent,
+        // Ensure other required fields from your schema (if any, not specified here) have default values or are included
       },
     });
 
-    logger.info({
-      message: "User registered successfully",
-      userId: newUser.id,
-      ip: clientIp,
-      userAgent,
-    });
+    console.log(
+      `User created successfully: ${user.id}, IP: ${ip}, User-Agent: ${userAgent}`
+    );
 
-    // Return success response
     return NextResponse.json(
       {
-        message: "User registered successfully",
-        userId: newUser.id,
+        message: "Account created successfully. Please sign in.",
+        userId: user.id,
+        email: user.email,
+        name: user.name,
       },
       { status: 201 }
     );
   } catch (error: any) {
-    // Generate a unique error ID for traceability
-    const errorId =
-      Date.now().toString(36) + Math.random().toString(36).substring(2);
+    const errorId = randomUUID();
+    console.error(`[${errorId}] Signup error:`, error);
 
-    logger.error({
-      message: "Error in signup process",
-      errorId,
-      error: error.message,
-      stack: error.stack,
-      ip: clientIp,
-      userAgent,
-    });
+    // More specific error handling can be added here, e.g., for Prisma unique constraint violations
+    if (error.code === "P2002") {
+      // Prisma unique constraint violation
+      let field = "unknown";
+      if (error.meta?.target?.includes("email")) {
+        field = "email";
+        return NextResponse.json(
+          {
+            errorId,
+            message: "An account with this email already exists.",
+          } as ErrorResponse,
+          { status: 409 }
+        );
+      }
+      // Add more checks if other unique fields exist, e.g. username
+      // else if (error.meta?.target?.includes('username')) {
+      //     field = "username";
+      //      return NextResponse.json(
+      //         {
+      //             errorId,
+      //             message: "This username is already taken. Please choose another.",
+      //         } as ErrorResponse,
+      //         { status: 409 }
+      //     );
+      // }
+      console.warn(
+        `[${errorId}] Prisma unique constraint violation on field: ${field}`
+      );
+    }
 
     return NextResponse.json(
       {
-        error: "An unexpected error occurred",
-        message:
-          "We encountered a problem while processing your signup. Please try again later.",
         errorId,
+        message:
+          "An unexpected error occurred during signup. Please try again later.",
       } as ErrorResponse,
       { status: 500 }
     );

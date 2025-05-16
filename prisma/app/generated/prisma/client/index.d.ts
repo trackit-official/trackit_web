@@ -7631,7 +7631,7 @@ export namespace Prisma {
     status: string | null
     monoDataStatus: string | null
     authMethod: string | null
-    monoReauthToken: string | null
+    reauthToken: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7652,7 +7652,7 @@ export namespace Prisma {
     status: string | null
     monoDataStatus: string | null
     authMethod: string | null
-    monoReauthToken: string | null
+    reauthToken: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7673,7 +7673,7 @@ export namespace Prisma {
     status: number
     monoDataStatus: number
     authMethod: number
-    monoReauthToken: number
+    reauthToken: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7704,7 +7704,7 @@ export namespace Prisma {
     status?: true
     monoDataStatus?: true
     authMethod?: true
-    monoReauthToken?: true
+    reauthToken?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7725,7 +7725,7 @@ export namespace Prisma {
     status?: true
     monoDataStatus?: true
     authMethod?: true
-    monoReauthToken?: true
+    reauthToken?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7746,7 +7746,7 @@ export namespace Prisma {
     status?: true
     monoDataStatus?: true
     authMethod?: true
-    monoReauthToken?: true
+    reauthToken?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7854,7 +7854,7 @@ export namespace Prisma {
     status: string | null
     monoDataStatus: string | null
     authMethod: string | null
-    monoReauthToken: string | null
+    reauthToken: string | null
     createdAt: Date
     updatedAt: Date
     _count: BankAccountCountAggregateOutputType | null
@@ -7894,7 +7894,7 @@ export namespace Prisma {
     status?: boolean
     monoDataStatus?: boolean
     authMethod?: boolean
-    monoReauthToken?: boolean
+    reauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7918,7 +7918,7 @@ export namespace Prisma {
     status?: boolean
     monoDataStatus?: boolean
     authMethod?: boolean
-    monoReauthToken?: boolean
+    reauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7940,7 +7940,7 @@ export namespace Prisma {
     status?: boolean
     monoDataStatus?: boolean
     authMethod?: boolean
-    monoReauthToken?: boolean
+    reauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7962,12 +7962,12 @@ export namespace Prisma {
     status?: boolean
     monoDataStatus?: boolean
     authMethod?: boolean
-    monoReauthToken?: boolean
+    reauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BankAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "accountName" | "accountNumber" | "bankName" | "balance" | "currency" | "isActive" | "lastSynced" | "monoId" | "accountHolderName" | "bvn" | "status" | "monoDataStatus" | "authMethod" | "monoReauthToken" | "createdAt" | "updatedAt", ExtArgs["result"]["bankAccount"]>
+  export type BankAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "accountName" | "accountNumber" | "bankName" | "balance" | "currency" | "isActive" | "lastSynced" | "monoId" | "accountHolderName" | "bvn" | "status" | "monoDataStatus" | "authMethod" | "reauthToken" | "createdAt" | "updatedAt", ExtArgs["result"]["bankAccount"]>
   export type BankAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | BankAccount$transactionsArgs<ExtArgs>
@@ -8002,7 +8002,7 @@ export namespace Prisma {
       status: string | null
       monoDataStatus: string | null
       authMethod: string | null
-      monoReauthToken: string | null
+      reauthToken: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["bankAccount"]>
@@ -8445,7 +8445,7 @@ export namespace Prisma {
     readonly status: FieldRef<"BankAccount", 'String'>
     readonly monoDataStatus: FieldRef<"BankAccount", 'String'>
     readonly authMethod: FieldRef<"BankAccount", 'String'>
-    readonly monoReauthToken: FieldRef<"BankAccount", 'String'>
+    readonly reauthToken: FieldRef<"BankAccount", 'String'>
     readonly createdAt: FieldRef<"BankAccount", 'DateTime'>
     readonly updatedAt: FieldRef<"BankAccount", 'DateTime'>
   }
@@ -13684,7 +13684,7 @@ export namespace Prisma {
     status: 'status',
     monoDataStatus: 'monoDataStatus',
     authMethod: 'authMethod',
-    monoReauthToken: 'monoReauthToken',
+    reauthToken: 'reauthToken',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14329,7 +14329,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"BankAccount"> | string | null
     monoDataStatus?: StringNullableFilter<"BankAccount"> | string | null
     authMethod?: StringNullableFilter<"BankAccount"> | string | null
-    monoReauthToken?: StringNullableFilter<"BankAccount"> | string | null
+    reauthToken?: StringNullableFilter<"BankAccount"> | string | null
     createdAt?: DateTimeFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -14352,7 +14352,7 @@ export namespace Prisma {
     status?: SortOrderInput | SortOrder
     monoDataStatus?: SortOrderInput | SortOrder
     authMethod?: SortOrderInput | SortOrder
-    monoReauthToken?: SortOrderInput | SortOrder
+    reauthToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -14378,7 +14378,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"BankAccount"> | string | null
     monoDataStatus?: StringNullableFilter<"BankAccount"> | string | null
     authMethod?: StringNullableFilter<"BankAccount"> | string | null
-    monoReauthToken?: StringNullableFilter<"BankAccount"> | string | null
+    reauthToken?: StringNullableFilter<"BankAccount"> | string | null
     createdAt?: DateTimeFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -14401,7 +14401,7 @@ export namespace Prisma {
     status?: SortOrderInput | SortOrder
     monoDataStatus?: SortOrderInput | SortOrder
     authMethod?: SortOrderInput | SortOrder
-    monoReauthToken?: SortOrderInput | SortOrder
+    reauthToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BankAccountCountOrderByAggregateInput
@@ -14430,7 +14430,7 @@ export namespace Prisma {
     status?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
     monoDataStatus?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
     authMethod?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
-    monoReauthToken?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
+    reauthToken?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BankAccount"> | Date | string
   }
@@ -15265,7 +15265,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBankAccountsInput
@@ -15288,7 +15288,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: TransactionUncheckedCreateNestedManyWithoutAccountInput
@@ -15309,7 +15309,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBankAccountsNestedInput
@@ -15332,7 +15332,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUncheckedUpdateManyWithoutAccountNestedInput
@@ -15354,7 +15354,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15374,7 +15374,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15395,7 +15395,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16359,7 +16359,7 @@ export namespace Prisma {
     status?: SortOrder
     monoDataStatus?: SortOrder
     authMethod?: SortOrder
-    monoReauthToken?: SortOrder
+    reauthToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16384,7 +16384,7 @@ export namespace Prisma {
     status?: SortOrder
     monoDataStatus?: SortOrder
     authMethod?: SortOrder
-    monoReauthToken?: SortOrder
+    reauthToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16405,7 +16405,7 @@ export namespace Prisma {
     status?: SortOrder
     monoDataStatus?: SortOrder
     authMethod?: SortOrder
-    monoReauthToken?: SortOrder
+    reauthToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17996,7 +17996,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: TransactionCreateNestedManyWithoutAccountInput
@@ -18017,7 +18017,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: TransactionUncheckedCreateNestedManyWithoutAccountInput
@@ -18281,7 +18281,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"BankAccount"> | string | null
     monoDataStatus?: StringNullableFilter<"BankAccount"> | string | null
     authMethod?: StringNullableFilter<"BankAccount"> | string | null
-    monoReauthToken?: StringNullableFilter<"BankAccount"> | string | null
+    reauthToken?: StringNullableFilter<"BankAccount"> | string | null
     createdAt?: DateTimeFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
   }
@@ -18790,7 +18790,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBankAccountsInput
@@ -18812,7 +18812,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18948,7 +18948,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBankAccountsNestedInput
@@ -18970,7 +18970,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19504,7 +19504,7 @@ export namespace Prisma {
     status?: string | null
     monoDataStatus?: string | null
     authMethod?: string | null
-    monoReauthToken?: string | null
+    reauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19651,7 +19651,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUpdateManyWithoutAccountNestedInput
@@ -19672,7 +19672,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUncheckedUpdateManyWithoutAccountNestedInput
@@ -19693,7 +19693,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
     authMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
+    reauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import crypto from "crypto";
 
 const MONO_API_URL = "https://api.withmono.com";
 
@@ -60,6 +61,26 @@ class MonoService {
         "MONO_SECRET_KEY is not set in environment variables. MonoService may not function correctly."
       );
     }
+  }
+
+  /**
+   * Verifies the signature of a webhook request from Mono.
+   * @param signature The value of the 'mono-webhook-signature' header.
+   * @param body The raw request body (as a string).
+   * @returns True if the signature is valid, false otherwise.
+   */
+  verifyWebhookSignature(signature: string, body: string): boolean {
+    if (!this.secretKey) {
+      console.error(
+        "MONO_SECRET_KEY is not set. Cannot verify webhook signature."
+      );
+      return false;
+    }
+    const hash = crypto
+      .createHmac("sha512", this.secretKey)
+      .update(body)
+      .digest("hex");
+    return hash === signature;
   }
 
   /**
@@ -454,35 +475,6 @@ class MonoService {
         "An unknown error occurred while syncing account with Mono"
       );
     }
-  }
-
-  /**
-   * Verify webhook signature
-   * @param signature The value of the 'mono-webhook-secret' header
-   * @param payload The raw request body (JSON string)
-   */
-  verifyWebhookSignature(signature: string, payload: string): boolean {
-    const webhookSecret = process.env.MONO_WEBHOOK_SECRET;
-    if (!webhookSecret) {
-      console.error(
-        "MONO_WEBHOOK_SECRET is not set. Cannot verify webhook signature."
-      );
-      return false; // Or throw an error, depending on desired strictness
-    }
-    // Mono's documentation should specify the exact signature verification method.
-    // Typically, it's an HMAC SHA256 or SHA512 hash.
-    // This is a placeholder implementation.
-    // const crypto = require('crypto');
-    // const hash = crypto.createHmac('sha512', webhookSecret)
-    //                    .update(payload)
-    //                    .digest('hex');
-    // return hash === signature;
-    // For now, if the header matches the secret directly (less secure, but for placeholder)
-    // IMPORTANT: Replace with actual HMAC verification as per Mono's docs.
-    console.warn(
-      "Using placeholder webhook signature verification. Implement HMAC SHA512 verification."
-    );
-    return signature === webhookSecret;
   }
 }
 

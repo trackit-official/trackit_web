@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/libs/prisma";
-import monoService from "@/libs/mono";
+import monoService from "@/services/mono"; // Corrected import path
 
 /**
  * POST /api/v1/accounts/:id/reauthorize

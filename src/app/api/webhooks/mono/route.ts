@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-// Remove direct crypto import if monoService handles all of it
-// import crypto from "crypto";
-import prisma from "@/libs/prisma";
-import monoService from "@/services/mono"; // Import the consolidated monoService
+import prisma from "@/libs/prisma"; // Corrected import path
+import monoService from "@/services/monoService"; // Corrected import path
 
 /**
  * POST /api/webhooks/mono
@@ -10,54 +8,50 @@ import monoService from "@/services/mono"; // Import the consolidated monoServic
  */
 export async function POST(request: NextRequest) {
   try {
-    const signature = request.headers.get("mono-webhook-signature"); // Corrected header name based on common patterns
+    const signature = request.headers.get("mono-webhook-signature");
     if (!signature) {
       console.warn("Webhook request missing mono-webhook-signature header");
       return NextResponse.json({ error: "Missing signature" }, { status: 401 });
     }
 
-    // Get the raw body as text for verification, then parse
     const rawBody = await request.text();
-
-    // Verify the webhook signature using the service
-    // The monoService.verifyWebhookSignature should implement the actual HMAC SHA512 logic.
-    // For now, it uses the placeholder. THIS MUST BE UPDATED in monoService.
     const isValid = monoService.verifyWebhookSignature(signature, rawBody);
+
     if (!isValid) {
       console.warn("Webhook request with invalid signature");
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    const body = JSON.parse(rawBody); // Parse after successful verification
-    const { event, data, meta } = body; // Destructure event and data, meta might also be present
+    const body = JSON.parse(rawBody);
+    const { event, data, meta } = body;
 
     console.log(`Received Mono webhook event: ${event}`, { data, meta });
 
-    // Handle different webhook events
     switch (event) {
-      case "mono.events.account_updated": // This event might signify balance changes, status changes etc.
-        await handleAccountUpdated(data);
+      case "mono.events.account_updated":
+        await handleAccountUpdated(data, meta);
         break;
-      case "mono.events.account_reauthorized": // Event after successful reauthorization
-        await handleAccountReauthorized(data);
+      case "mono.events.account_reauthorized":
+        await handleAccountReauthorized(data, meta);
         break;
-      case "mono.events.reauthorisation_required": // Corrected spelling if Mono uses this
-      case "mono.events.reauthorization_required": // Or this common spelling
-        await handleReauthorisationRequired(data);
+      case "mono.events.reauthorisation_required": // Mono's spelling
+      case "mono.events.reauthorization_required": // Common spelling
+        await handleReauthorisationRequired(data, meta);
         break;
-      case "mono.events.new_transaction": // If Mono has a specific event for new transactions
-      case "mono.events.transactions_updated": // Or for batch updates
-        await handleNewTransactions(data);
+      case "mono.events.new_transaction":
+      case "mono.events.transactions_updated":
+        await handleNewTransactions(data, meta);
         break;
-      case "mono.events.data_sync_completed": // Or a more specific name for data sync
-      case "mono.events.data_sync": // Keeping original for now
-        await handleDataSync(data);
+      // It's good practice to handle data_sync completion if it implies new data is ready
+      case "mono.events.data_sync_completed":
+      case "mono.events.data_sync": // if this is the event name from Mono
+        await handleDataSync(data, meta);
         break;
       case "mono.events.account_unlinked":
         await handleAccountUnlinked(data);
         break;
       default:
-        console.log(`Unhandled Mono webhook event: ${event}`, data);
+        console.log(`Unhandled Mono webhook event: ${event}`, { data, meta });
     }
 
     return NextResponse.json({ received: true, event });
@@ -66,7 +60,10 @@ export async function POST(request: NextRequest) {
       "Webhook processing error:",
       error.message,
       error.stack,
-      await error.request?.text().catch(() => "")
+      // Avoid trying to read body again if request object is not as expected
+      error.request
+        ? await error.request.text().catch(() => "")
+        : "No request body available"
     );
     return NextResponse.json(
       { error: "Webhook processing failed", details: error.message },
@@ -75,280 +72,357 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * Handle account updated event
- * This event can signify various updates like balance change, account status change, etc.
- */
-async function handleAccountUpdated(data: any) {
-  const accountId = data.account?._id || data.account_id || data._id; // Mono might use _id or account_id
-  if (!accountId) {
+async function handleAccountUpdated(data: any, meta: any) {
+  const monoAccountId = data.account?._id || data._id; // data._id can be fallback if data.account is not present
+  if (!monoAccountId) {
     console.error(
-      "handleAccountUpdated: Missing account_id in webhook data",
-      data
+      "handleAccountUpdated: Missing account_id (monoAccountId) in webhook data",
+      { data, meta }
     );
     return;
   }
 
   try {
-    const updateData: any = {
+    const updatePayload: any = {
       lastSynced: new Date(),
-      // Potentially update other fields if provided in `data`
-      // e.g., data_status from data.meta?.data_status
+      monoDataStatus: meta?.data_status, // Capture data_status from meta
     };
 
     if (data.account?.balance !== undefined) {
-      updateData.balance = data.account.balance; // Ensure this is the correct path and format (e.g., kobo/cents)
-    }
-    if (data.meta?.data_status) {
-      updateData.monoDataStatus = data.meta.data_status;
+      updatePayload.balance = data.account.balance / 100; // Assuming balance is in kobo/cents
     }
     if (data.account?.status) {
-      // Mono might send an overall status for the account
-      updateData.status =
-        data.account.status === "active" ? "ACTIVE" : "NEEDS_ATTENTION"; // Map to your own status enum
+      updatePayload.status = mapMonoAccountStatus(data.account.status);
     }
 
     const updatedAccount = await prisma.bankAccount.updateMany({
-      // Use updateMany if monoId is not unique, or update if it is
-      where: { monoId: accountId },
-      data: updateData,
+      where: { monoId: monoAccountId },
+      data: updatePayload,
     });
 
     if (updatedAccount.count > 0) {
-      console.log(`Account ${accountId} updated successfully via webhook.`);
+      console.log(
+        `Account ${monoAccountId} updated successfully via 'account_updated' webhook.`
+      );
     } else {
       console.warn(
-        `handleAccountUpdated: No account found with monoId ${accountId} to update.`
+        `handleAccountUpdated: No account found with monoId ${monoAccountId} to update.`
       );
     }
   } catch (error) {
     console.error(
-      `Failed to update account ${accountId} from 'account_updated' webhook:`,
-      error
+      `Failed to update account ${monoAccountId} from 'account_updated' webhook:`,
+      {
+        message: error instanceof Error ? error.message : String(error),
+        data,
+        meta,
+      }
     );
   }
 }
 
-/**
- * Handle account reauthorized event
- */
-async function handleAccountReauthorized(data: any) {
-  const accountId = data.account?._id || data.account_id || data._id;
-  if (!accountId) {
+async function handleAccountReauthorized(data: any, meta: any) {
+  const monoAccountId = data.account?._id || data._id;
+  if (!monoAccountId) {
     console.error(
       "handleAccountReauthorized: Missing account_id in webhook data",
-      data
+      { data, meta }
     );
     return;
   }
 
   try {
     const updatedAccount = await prisma.bankAccount.updateMany({
-      where: { monoId: accountId },
+      where: { monoId: monoAccountId },
       data: {
-        status: "ACTIVE", // Or "SYNCED", "CONNECTED"
-        reauthToken: null, // Clear any reauth token
+        status: "ACTIVE",
+        reauthToken: null, // Clear any stored reauth token
         lastSynced: new Date(),
-        monoDataStatus: data.meta?.data_status || "AVAILABLE",
-      },
-    });
-    if (updatedAccount.count > 0) {
-      console.log(`Account ${accountId} marked as reauthorized and active.`);
-      // Optionally, trigger a data sync or transaction fetch here
-      // await monoService.syncAccount(accountId);
-    } else {
-      console.warn(
-        `handleAccountReauthorized: No account found with monoId ${accountId} to update.`
-      );
-    }
-  } catch (error) {
-    console.error(
-      `Failed to update account ${accountId} from 'account_reauthorized' webhook:`,
-      error
-    );
-  }
-}
-
-/**
- * Handle reauthorisation required event
- */
-async function handleReauthorisationRequired(data: any) {
-  const accountId = data.account?._id || data.account_id || data._id; // Mono might use _id or account_id
-  if (!accountId) {
-    console.error(
-      "handleReauthorisationRequired: Missing account_id in webhook data",
-      data
-    );
-    return;
-  }
-
-  try {
-    // Mark the account as requiring reauthorisation
-    // Store the reauth_token if provided by Mono in this event, which can be used on the frontend
-    const reauthToken = data.reauthorisation_token || data.reauth_token; // Check Mono docs for the exact field name
-
-    const updatedAccount = await prisma.bankAccount.updateMany({
-      where: {
-        monoId: accountId,
-      },
-      data: {
-        status: "REAUTH_REQUIRED",
-        reauthToken: reauthToken || null, // Store the token if available
-        monoDataStatus: data.meta?.data_status || "PENDING_REAUTHORIZATION",
+        monoDataStatus: meta?.data_status || "AVAILABLE",
       },
     });
 
     if (updatedAccount.count > 0) {
       console.log(
-        `Account ${accountId} marked for reauthorisation. Reauth token: ${reauthToken}`
+        `Account ${monoAccountId} marked as reauthorized and active via webhook.`
       );
+      // Optionally, trigger a data sync for fresh data
+      // await monoService.triggerDataSync(monoAccountId);
     } else {
       console.warn(
-        `handleReauthorisationRequired: No account found with monoId ${accountId} to update.`
+        `handleAccountReauthorized: No account found with monoId ${monoAccountId} to update.`
       );
     }
   } catch (error) {
     console.error(
-      `Failed to mark account ${accountId} for reauthorisation:`,
-      error
+      `Failed to update account ${monoAccountId} from 'account_reauthorized' webhook:`,
+      {
+        message: error instanceof Error ? error.message : String(error),
+        data,
+        meta,
+      }
     );
   }
 }
 
-/**
- * Handle new transactions event
- * This assumes 'data' contains an array of transactions or information to fetch them.
- */
-async function handleNewTransactions(webhookData: any) {
-  const accountId = webhookData.account?._id || webhookData.account_id;
-  if (!accountId) {
+async function handleReauthorisationRequired(data: any, meta: any) {
+  const monoAccountId = data.account?._id || data._id;
+  if (!monoAccountId) {
     console.error(
-      "handleNewTransactions: Missing account_id in webhook data",
-      webhookData
+      "handleReauthorisationRequired: Missing account_id in webhook data",
+      { data, meta }
     );
     return;
   }
 
-  // If transactions are directly in the webhook payload:
+  try {
+    const reauthToken = data.reauthorisation_token || data.reauth_token; // Check Mono docs for the exact field name
+
+    const updatedAccount = await prisma.bankAccount.updateMany({
+      where: { monoId: monoAccountId },
+      data: {
+        status: "REAUTH_REQUIRED",
+        reauthToken: reauthToken || null, // Store the reauth_token
+        monoDataStatus: meta?.data_status || "PENDING_REAUTHORIZATION",
+        lastSynced: new Date(), // Update last synced time
+      },
+    });
+
+    if (updatedAccount.count > 0) {
+      console.log(
+        `Account ${monoAccountId} marked for reauthorisation. Reauth token: ${reauthToken ? "stored" : "not provided"}.`
+      );
+    } else {
+      console.warn(
+        `handleReauthorisationRequired: No account found with monoId ${monoAccountId} to update.`
+      );
+    }
+  } catch (error) {
+    console.error(
+      `Failed to mark account ${monoAccountId} for reauthorisation via webhook:`,
+      {
+        message: error instanceof Error ? error.message : String(error),
+        data,
+        meta,
+      }
+    );
+  }
+}
+
+async function handleNewTransactions(webhookData: any, meta: any) {
+  const monoAccountId = webhookData.account?._id || webhookData.account_id; // account_id might be direct
+  if (!monoAccountId) {
+    console.error(
+      "handleNewTransactions: Missing monoAccountId in webhook data",
+      { webhookData, meta }
+    );
+    return;
+  }
+
+  // Attempt to find the internal bank account ID
+  const bankAccount = await prisma.bankAccount.findUnique({
+    where: { monoId: monoAccountId },
+    select: { id: true, userId: true }, // Select userId as well
+  });
+
+  if (!bankAccount) {
+    console.warn(
+      `handleNewTransactions: BankAccount with monoId ${monoAccountId} not found in DB.`
+    );
+    return;
+  }
+  const internalAccountId = bankAccount.id;
+  const userId = bankAccount.userId; // Get the userId from the bankAccount
+
+  // Check if transactions are directly in the webhook payload
   const transactions =
     webhookData.data?.transactions ||
     webhookData.transactions ||
     (Array.isArray(webhookData.data) ? webhookData.data : null);
 
-  if (transactions && Array.isArray(transactions)) {
+  if (transactions && Array.isArray(transactions) && transactions.length > 0) {
     console.log(
-      `Processing ${transactions.length} new transactions for account ${accountId} from webhook.`
+      `Processing ${transactions.length} new transactions for monoAccount ${monoAccountId} (internal: ${internalAccountId}) from webhook.`
     );
     for (const txn of transactions) {
+      if (!txn._id) {
+        console.warn("Skipping transaction without _id:", txn);
+        continue;
+      }
       try {
-        // Adapt this to your Prisma schema for transactions
-        // Ensure you have a unique constraint on transaction ID from Mono to avoid duplicates
         await prisma.transaction.upsert({
-          where: { monoTransactionId: txn._id }, // Assuming txn._id is the unique ID from Mono
+          where: { monoTransactionId: txn._id },
           update: {
-            amount: txn.amount,
+            amount: txn.amount / 100, // Assuming kobo/cents
             date: new Date(txn.date),
             narration: txn.narration,
-            type: txn.type, // "debit" or "credit"
-            category: txn.category,
-            balanceAfter: txn.balance,
-            bankAccountId: accountId, // This needs to be your internal bankAccountId, not monoId
-            // You might need to fetch your BankAccount record first
+            type: mapMonoTransactionType(txn.type), // "debit" or "credit" -> EXPENSE/INCOME
+            category: txn.category, // Mono's category
+            balanceAfter: txn.balance / 100, // Assuming kobo/cents
+            currency: txn.currency || "NGN", // Default if not provided
+            // userId and accountId are already set on create and should not change on update for this record
           },
           create: {
             monoTransactionId: txn._id,
-            amount: txn.amount,
+            userId: userId, // Set the userId
+            accountId: internalAccountId,
+            amount: txn.amount / 100, // Assuming kobo/cents
             date: new Date(txn.date),
             narration: txn.narration,
-            type: txn.type,
+            type: mapMonoTransactionType(txn.type),
             category: txn.category,
-            balanceAfter: txn.balance,
-            bankAccount: { connect: { monoId: accountId } }, // Connect to the BankAccount using its monoId
+            balanceAfter: txn.balance / 100, // Assuming kobo/cents
+            currency: txn.currency || "NGN",
+            // bankAccount: { connect: { id: internalAccountId } }, // Already handled by accountId
           },
         });
       } catch (error) {
         console.error(
-          `Failed to save transaction ${txn._id} for account ${accountId}:`,
-          error
+          `Failed to save transaction ${txn._id} for monoAccount ${monoAccountId}:`,
+          {
+            message: error instanceof Error ? error.message : String(error),
+            transactionData: txn,
+          }
         );
       }
     }
     // Update last synced for the account after processing transactions
-    await prisma.bankAccount.updateMany({
-      where: { monoId: accountId },
-      data: { lastSynced: new Date() },
+    await prisma.bankAccount.update({
+      where: { id: internalAccountId },
+      data: {
+        lastSynced: new Date(),
+        monoDataStatus: meta?.data_status || "AVAILABLE",
+      },
     });
   } else {
-    // If transactions are not in the payload, this event might just be a notification.
-    // You might need to call monoService.getAccountTransactions(accountId) here.
     console.log(
-      `'new_transaction' event received for account ${accountId}. Consider fetching transactions if not in payload.`
+      `'new_transaction' or 'transactions_updated' event for monoAccount ${monoAccountId}. No transactions in payload or empty. Triggering manual fetch.`
     );
-    // Example:
-    // const fetchedTransactions = await monoService.getAccountTransactions(accountId, { start: "some_recent_date" });
-    // Process fetchedTransactions.data
-    await prisma.bankAccount.updateMany({
-      where: { monoId: accountId },
-      data: { lastSynced: new Date(), status: "SYNCED" },
-    });
+    try {
+      // Fetch recent transactions using monoService
+      const fetchedTxData = await monoService.getAccountTransactions(
+        monoAccountId,
+        { limit: 50 }
+      ); // Fetch last 50 for example
+      if (
+        fetchedTxData &&
+        fetchedTxData.data &&
+        fetchedTxData.data.length > 0
+      ) {
+        console.log(
+          `Fetched ${fetchedTxData.data.length} transactions for monoAccount ${monoAccountId}`
+        );
+        for (const txn of fetchedTxData.data) {
+          if (!txn._id) {
+            console.warn("Skipping fetched transaction without _id:", txn);
+            continue;
+          }
+          await prisma.transaction.upsert({
+            where: { monoTransactionId: txn._id },
+            update: {
+              amount: txn.amount / 100,
+              date: new Date(txn.date),
+              narration: txn.narration,
+              type: mapMonoTransactionType(txn.type),
+              category: txn.category,
+              balanceAfter: txn.balance / 100,
+              currency: txn.currency || "NGN",
+            },
+            create: {
+              monoTransactionId: txn._id,
+              userId: userId, // Set the userId
+              accountId: internalAccountId,
+              amount: txn.amount / 100,
+              date: new Date(txn.date),
+              narration: txn.narration,
+              type: mapMonoTransactionType(txn.type),
+              category: txn.category,
+              balanceAfter: txn.balance / 100,
+              currency: txn.currency || "NGN",
+            },
+          });
+        }
+      }
+      await prisma.bankAccount.update({
+        where: { id: internalAccountId },
+        data: {
+          lastSynced: new Date(),
+          status: "ACTIVE", // Or SYNCED
+          monoDataStatus:
+            meta?.data_status || fetchedTxData.data?.length > 0
+              ? "AVAILABLE"
+              : "PROCESSING",
+        },
+      });
+    } catch (error) {
+      console.error(
+        `Error fetching transactions for ${monoAccountId} after webhook notification:`,
+        error
+      );
+      await prisma.bankAccount.update({
+        where: { id: internalAccountId },
+        data: {
+          lastSynced: new Date(),
+          status: "SYNC_FAILED",
+          monoDataStatus: "FAILED",
+        },
+      });
+    }
   }
 }
 
-/**
- * Handle data sync event
- */
-async function handleDataSync(data: any) {
-  const accountId = data.account?._id || data.account_id || data._id;
-  if (!accountId) {
-    console.error("handleDataSync: Missing account_id in webhook data", data);
+async function handleDataSync(data: any, meta: any) {
+  const monoAccountId = data.account?._id || data._id;
+  if (!monoAccountId) {
+    console.error("handleDataSync: Missing account_id in webhook data", {
+      data,
+      meta,
+    });
     return;
   }
 
   try {
-    // This event might signify completion of a background sync.
-    // You might want to fetch new data if not already pushed by other events.
-    const updateData: any = {
+    const updatePayload: any = {
       lastSynced: new Date(),
-      status: "SYNCED", // Or "ACTIVE"
-      monoDataStatus: data.meta?.data_status || "AVAILABLE",
+      status: mapMonoAccountStatus(data.account?.status || "active"), // Default to active if not present
+      monoDataStatus: meta?.data_status || "AVAILABLE",
     };
 
     if (data.account?.balance !== undefined) {
-      updateData.balance = data.account.balance;
+      updatePayload.balance = data.account.balance / 100; // Assuming kobo/cents
     }
 
     const updatedAccount = await prisma.bankAccount.updateMany({
-      where: {
-        monoId: accountId,
-      },
-      data: updateData,
+      where: { monoId: monoAccountId },
+      data: updatePayload,
     });
 
     if (updatedAccount.count > 0) {
       console.log(
-        `Data sync completed for account ${accountId}. Balance updated if provided.`
+        `Data sync status updated for account ${monoAccountId} via webhook. Balance updated if provided.`
       );
-      // Optionally, trigger a specific transaction fetch if this sync implies new transactions
-      // await handleNewTransactions({ account_id: accountId }); // If you want to force a fetch
+      // If this event implies new transactions might be available, consider fetching them
+      // await handleNewTransactions({ account: { _id: monoAccountId } }, meta); // Pass necessary structure
     } else {
       console.warn(
-        `handleDataSync: No account found with monoId ${accountId} to update.`
+        `handleDataSync: No account found with monoId ${monoAccountId} to update.`
       );
     }
   } catch (error) {
     console.error(
-      `Failed to update sync status for account ${accountId}:`,
-      error
+      `Failed to update sync status for account ${monoAccountId} from 'data_sync' webhook:`,
+      {
+        message: error instanceof Error ? error.message : String(error),
+        data,
+        meta,
+      }
     );
   }
 }
 
-/**
- * Handle account unlinked event
- */
 async function handleAccountUnlinked(data: any) {
-  const accountId = data.account?._id || data.account_id || data._id;
-  if (!accountId) {
+  const monoAccountId = data.account?._id || data._id;
+  if (!monoAccountId) {
     console.error(
       "handleAccountUnlinked: Missing account_id in webhook data",
       data
@@ -358,49 +432,62 @@ async function handleAccountUnlinked(data: any) {
 
   try {
     const updatedAccount = await prisma.bankAccount.updateMany({
-      where: { monoId: accountId },
+      where: { monoId: monoAccountId },
       data: {
-        status: "UNLINKED", // Or "INACTIVE", "DISCONNECTED"
-        monoAccessToken: null, // Clear sensitive tokens
-        reauthToken: null,
+        status: "UNLINKED",
+        reauthToken: null, // Clear reauth token on unlink
+        isActive: false, // Mark as inactive in your system
         lastSynced: new Date(),
-        monoDataStatus: "UNLINKED",
+        monoDataStatus: "UNLINKED", // Or a similar status you define
+        monoId: null, // Important: Nullify monoId to allow relinking if needed, or handle differently
       },
     });
 
     if (updatedAccount.count > 0) {
-      console.log(`Account ${accountId} marked as unlinked.`);
+      console.log(`Account ${monoAccountId} marked as unlinked via webhook.`);
     } else {
       console.warn(
-        `handleAccountUnlinked: No account found with monoId ${accountId} to mark as unlinked.`
+        `handleAccountUnlinked: No account found with monoId ${monoAccountId} to update.`
       );
     }
   } catch (error) {
     console.error(
-      `Failed to update account ${accountId} from 'account_unlinked' webhook:`,
-      error
+      `Failed to mark account ${monoAccountId} as unlinked via webhook:`,
+      {
+        message: error instanceof Error ? error.message : String(error),
+        data,
+      }
     );
   }
 }
 
-// Remember to add a Transaction model to your prisma.schema if you handle new_transaction events
-// Example for prisma.schema:
-// model Transaction {
-//   id                String    @id @default(cuid())
-//   monoTransactionId String    @unique // ID from Mono
-//   bankAccountId     String
-//   bankAccount       BankAccount @relation(fields: [bankAccountId], references: [id])
-//   amount            Float
-//   date              DateTime
-//   narration         String
-//   type              String    // "debit" or "credit"
-//   category          String?
-//   balanceAfter      Float?    // Balance after this transaction
-//   createdAt         DateTime  @default(now())
-//   updatedAt         DateTime  @updatedAt
-// }
-// model BankAccount {
-//   // ... other fields
-//   monoDataStatus    String?   // To store data_status from Mono meta
-//   transactions      Transaction[]
-// }
+// Helper function to map Mono transaction types to your enum
+function mapMonoTransactionType(monoType: string): "INCOME" | "EXPENSE" {
+  // Based on your Prisma schema, you only have INCOME and EXPENSE (and TRANSFER)
+  // Mono typically uses 'credit' and 'debit'
+  if (monoType?.toLowerCase() === "credit") {
+    return "INCOME";
+  }
+  return "EXPENSE"; // Default to EXPENSE for 'debit' or other types
+}
+
+// Helper function to map Mono account status to your BankAccount status
+function mapMonoAccountStatus(monoStatus: string): string {
+  // Example mapping, adjust based on your needs and Mono's possible statuses
+  const status = monoStatus?.toLowerCase();
+  if (status === "active" || status === "available") {
+    return "ACTIVE";
+  }
+  if (
+    status === "reauthorisation_required" ||
+    status === "reauthorization_required"
+  ) {
+    return "REAUTH_REQUIRED";
+  }
+  if (status === "disabled" || status === "suspended") {
+    return "INACTIVE"; // Or a specific status like "SUSPENDED"
+  }
+  return "NEEDS_ATTENTION"; // Default for unknown or other statuses
+}
+
+// Ensure NextRequest and NextResponse are imported from "next/server"
