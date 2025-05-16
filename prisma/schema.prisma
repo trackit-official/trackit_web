@@ -50,7 +50,7 @@ model User {
   passwordResetTokenExp DateTime?
   role                String    @default("USER")
   createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  updatedAt           DateTime  @default(now()) @updatedAt
 
   // Security tracking fields
   failedLoginAttempts Int       @default(0)

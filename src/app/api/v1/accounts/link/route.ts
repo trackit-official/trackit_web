@@ -11,7 +11,8 @@ import monoService from "@/services/mono"; // Corrected import
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) { // Check for user.id as well
+    if (!session?.user?.id) {
+      // Check for user.id as well
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const userId = session.user.id;
@@ -31,20 +32,30 @@ export async function POST(request: NextRequest) {
     // Exchange code for account ID
     const auth = await monoService.exchangeToken(code as string);
     const monoAccountId = auth.id; // This is the ID from Mono, often referred to as account_id
-    console.log(`[Link Account] Exchanged code for Mono Account ID: ${monoAccountId}`);
+    console.log(
+      `[Link Account] Exchanged code for Mono Account ID: ${monoAccountId}`
+    );
 
     // Get account details
-    const { account: monoAccountDetails, meta: monoAccountMeta } = await monoService.getAccountDetails(monoAccountId);
-    console.log(`[Link Account] Fetched Mono Account Details for ${monoAccountId}`);
+    const { account: monoAccountDetails, meta: monoAccountMeta } =
+      await monoService.getAccountDetails(monoAccountId);
+    console.log(
+      `[Link Account] Fetched Mono Account Details for ${monoAccountId}`
+    );
 
     // Get account identity (e.g., BVN, full name)
     // Ensure your MonoAccount interface and Prisma schema can store these if needed.
     let monoAccountIdentity;
     try {
       monoAccountIdentity = await monoService.getAccountIdentity(monoAccountId);
-      console.log(`[Link Account] Fetched Mono Account Identity for ${monoAccountId}`);
+      console.log(
+        `[Link Account] Fetched Mono Account Identity for ${monoAccountId}`
+      );
     } catch (identityError) {
-      console.warn(`[Link Account] Could not fetch identity for Mono Account ID ${monoAccountId}:`, identityError);
+      console.warn(
+        `[Link Account] Could not fetch identity for Mono Account ID ${monoAccountId}:`,
+        identityError
+      );
       // Decide if this is a critical error or if you can proceed without identity.
       // For now, we'll proceed but log it.
     }
@@ -60,14 +71,16 @@ export async function POST(request: NextRequest) {
     let appAccount; // This will be our application's bank account record
 
     if (existingAccount) {
-      console.log(`[Link Account] Account ${monoAccountId} already exists for user ${userId}. Updating.`);
+      console.log(
+        `[Link Account] Account ${monoAccountId} already exists for user ${userId}. Updating.`
+      );
       // Update existing account
       appAccount = await prisma.bankAccount.update({
         where: { id: existingAccount.id },
         data: {
           balance: monoAccountDetails.balance / 100, // Convert from kobo
           // monoAccessToken: code as string, // Storing the initial short-lived code. Consider if needed.
-                                          // The primary link is monoId.
+          // The primary link is monoId.
           lastSynced: new Date(),
           status: "ACTIVE", // Or based on monoAccountMeta.data_status
           monoDataStatus: monoAccountMeta?.data_status,
@@ -75,14 +88,20 @@ export async function POST(request: NextRequest) {
           ...(monoAccountIdentity?.bvn && { bvn: monoAccountIdentity.bvn }),
         },
       });
-      console.log(`[Link Account] Updated existing account ID: ${appAccount.id}`);
+      console.log(
+        `[Link Account] Updated existing account ID: ${appAccount.id}`
+      );
     } else {
-      console.log(`[Link Account] Account ${monoAccountId} is new for user ${userId}. Creating.`);
+      console.log(
+        `[Link Account] Account ${monoAccountId} is new for user ${userId}. Creating.`
+      );
       // Create new bank account record
       appAccount = await prisma.bankAccount.create({
         data: {
           userId: userId,
-          accountName: monoAccountDetails.name || `${monoAccountDetails.institution.name} Account`,
+          accountName:
+            monoAccountDetails.name ||
+            `${monoAccountDetails.institution.name} Account`,
           accountNumber: monoAccountDetails.accountNumber || "N/A",
           bankName: monoAccountDetails.institution.name,
           balance: monoAccountDetails.balance / 100, // Convert from kobo
@@ -96,7 +115,9 @@ export async function POST(request: NextRequest) {
           authMethod: monoAccountMeta?.auth_method,
           // Store identity info if available and schema supports
           ...(monoAccountIdentity?.bvn && { bvn: monoAccountIdentity.bvn }),
-          ...(monoAccountIdentity?.fullName && { accountHolderName: monoAccountIdentity.fullName }),
+          ...(monoAccountIdentity?.fullName && {
+            accountHolderName: monoAccountIdentity.fullName,
+          }),
         },
       });
       console.log(`[Link Account] Created new account ID: ${appAccount.id}`);
@@ -104,12 +125,23 @@ export async function POST(request: NextRequest) {
 
     // Start initial data sync in the background (no await here, it runs independently)
     syncInitialTransactions(monoAccountId, appAccount.id, userId)
-      .then(() => console.log(`[Link Account] Initial transaction sync process started for app account ${appAccount.id}`))
-      .catch(err => console.error(`[Link Account] Error starting initial transaction sync for ${appAccount.id}:`, err));
+      .then(() =>
+        console.log(
+          `[Link Account] Initial transaction sync process started for app account ${appAccount.id}`
+        )
+      )
+      .catch((err) =>
+        console.error(
+          `[Link Account] Error starting initial transaction sync for ${appAccount.id}:`,
+          err
+        )
+      );
 
     return NextResponse.json(
       {
-        message: existingAccount ? "Account updated successfully" : "Account linked successfully",
+        message: existingAccount
+          ? "Account updated successfully"
+          : "Account linked successfully",
         account: {
           id: appAccount.id,
           name: appAccount.accountName,
@@ -122,13 +154,20 @@ export async function POST(request: NextRequest) {
       { status: existingAccount ? 200 : 201 }
     );
   } catch (error: any) {
-    console.error("[Link Account] Error linking account:", error.response?.data || error.message, error.stack);
+    console.error(
+      "[Link Account] Error linking account:",
+      error.response?.data || error.message,
+      error.stack
+    );
     // Check if it's a known Mono error structure
     if (error.response?.data?.message) {
-         return NextResponse.json(
-            { error: "Failed to link account with Mono", message: error.response.data.message },
-            { status: error.response.status || 500 }
-        );
+      return NextResponse.json(
+        {
+          error: "Failed to link account with Mono",
+          message: error.response.data.message,
+        },
+        { status: error.response.status || 500 }
+      );
     }
     return NextResponse.json(
       {
@@ -148,7 +187,9 @@ async function syncInitialTransactions(
   internalAccountId: string, // Your application's database ID for the bank account
   userId: string
 ) {
-  console.log(`[Sync Transactions] Starting initial sync for Mono Account ID ${monoApiAccountId}, App Account ID ${internalAccountId}`);
+  console.log(
+    `[Sync Transactions] Starting initial sync for Mono Account ID ${monoApiAccountId}, App Account ID ${internalAccountId}`
+  );
   try {
     // Get transactions from the last 3 months (or preferred period)
     const threeMonthsAgo = new Date();
@@ -156,41 +197,50 @@ async function syncInitialTransactions(
     // Format dates as YYYY-MM-DD or DD-MM-YYYY as required by Mono
     // Mono typically expects DD-MM-YYYY for start/end in query params
     const formatDateForMono = (date: Date) => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
     };
 
     const startDate = formatDateForMono(threeMonthsAgo);
     const endDate = formatDateForMono(new Date());
 
-    console.log(`[Sync Transactions] Fetching transactions for ${monoApiAccountId} from ${startDate} to ${endDate}`);
+    console.log(
+      `[Sync Transactions] Fetching transactions for ${monoApiAccountId} from ${startDate} to ${endDate}`
+    );
 
     // Get transactions from Mono API
     // The monoService.getAccountTransactions might return a paginated response.
     // Handle pagination if necessary to get all transactions.
     // For simplicity, assuming it returns all within the limit or we handle one page.
-    const transactionResponse = await monoService.getAccountTransactions(monoApiAccountId, {
-      start: startDate,
-      end: endDate,
-      // paginate: true, // If your service method supports this param directly
-      limit: 500, // Max limit often 500 for Mono. Adjust as needed.
-    });
+    const transactionResponse = await monoService.getAccountTransactions(
+      monoApiAccountId,
+      {
+        start: startDate,
+        end: endDate,
+        // paginate: true, // If your service method supports this param directly
+        limit: 500, // Max limit often 500 for Mono. Adjust as needed.
+      }
+    );
 
     const transactionsFromMono = transactionResponse.data; // Assuming .data holds the array
 
     if (!transactionsFromMono || transactionsFromMono.length === 0) {
-      console.log(`[Sync Transactions] No transactions found for Mono Account ID ${monoApiAccountId} in the period.`);
+      console.log(
+        `[Sync Transactions] No transactions found for Mono Account ID ${monoApiAccountId} in the period.`
+      );
       // Update last synced even if no transactions
-       await prisma.bankAccount.update({
+      await prisma.bankAccount.update({
         where: { id: internalAccountId },
         data: { lastSynced: new Date(), status: "SYNCED" }, // Mark as SYNCED
       });
       return;
     }
 
-    console.log(`[Sync Transactions] Received ${transactionsFromMono.length} transactions for Mono Account ID ${monoApiAccountId}. Processing...`);
+    console.log(
+      `[Sync Transactions] Received ${transactionsFromMono.length} transactions for Mono Account ID ${monoApiAccountId}. Processing...`
+    );
     let newTransactionsCount = 0;
 
     for (const tx of transactionsFromMono) {
@@ -242,12 +292,15 @@ async function syncInitialTransactions(
     );
     // Optionally update account status to indicate sync failure
     try {
-        await prisma.bankAccount.update({
-            where: { id: internalAccountId },
-            data: { status: "SYNC_FAILED" },
-        });
+      await prisma.bankAccount.update({
+        where: { id: internalAccountId },
+        data: { status: "SYNC_FAILED" },
+      });
     } catch (dbError) {
-        console.error(`[Sync Transactions] Failed to update account status to SYNC_FAILED for ${internalAccountId}:`, dbError);
+      console.error(
+        `[Sync Transactions] Failed to update account status to SYNC_FAILED for ${internalAccountId}:`,
+        dbError
+      );
     }
   }
 }
