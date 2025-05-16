@@ -80,18 +80,27 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error exchanging token:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error exchanging token with Mono");
+        console.error(
+          "Error exchanging token:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data || new Error("Error exchanging token with Mono")
+        );
       }
       console.error("Error exchanging token (unknown):", error);
-      throw new Error("An unknown error occurred while exchanging token with Mono");
+      throw new Error(
+        "An unknown error occurred while exchanging token with Mono"
+      );
     }
   }
 
   /**
    * Get account details by account ID
    */
-  async getAccountDetails(accountId: string): Promise<{ account: MonoAccount; meta?: any }> {
+  async getAccountDetails(
+    accountId: string
+  ): Promise<{ account: MonoAccount; meta?: any }> {
     try {
       const response = await axios.get<{ account: MonoAccount; meta?: any }>(
         `${MONO_API_URL}/accounts/${accountId}`,
@@ -105,14 +114,22 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error fetching account details:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error fetching account details from Mono");
+        console.error(
+          "Error fetching account details:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error fetching account details from Mono")
+        );
       }
       console.error("Error fetching account details (unknown):", error);
-      throw new Error("An unknown error occurred while fetching account details from Mono");
+      throw new Error(
+        "An unknown error occurred while fetching account details from Mono"
+      );
     }
   }
-  
+
   /**
    * Get account identity information
    */
@@ -130,17 +147,25 @@ class MonoService {
         }
       );
       // Check if response.data has a 'data' property
-      if ('data' in response.data && typeof response.data.data === 'object') {
+      if ("data" in response.data && typeof response.data.data === "object") {
         return response.data.data as MonoIdentity;
       }
       return response.data as MonoIdentity;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error fetching account identity:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error fetching account identity from Mono");
+        console.error(
+          "Error fetching account identity:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error fetching account identity from Mono")
+        );
       }
       console.error("Error fetching account identity (unknown):", error);
-      throw new Error("An unknown error occurred while fetching account identity from Mono");
+      throw new Error(
+        "An unknown error occurred while fetching account identity from Mono"
+      );
     }
   }
 
@@ -158,26 +183,35 @@ class MonoService {
       narration?: string;
       type?: "debit" | "credit";
     }
-  ): Promise<{ paging: any; data: MonoTransaction[] }> { // Adjusted to match typical Mono response
+  ): Promise<{ paging: any; data: MonoTransaction[] }> {
+    // Adjusted to match typical Mono response
     try {
-      const response = await axios.get<{ paging: any; data: MonoTransaction[] }>(
-        `${MONO_API_URL}/accounts/${accountId}/transactions`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "mono-sec-key": this.secretKey,
-          },
-          params: options,
-        }
-      );
+      const response = await axios.get<{
+        paging: any;
+        data: MonoTransaction[];
+      }>(`${MONO_API_URL}/accounts/${accountId}/transactions`, {
+        headers: {
+          "Content-Type": "application/json",
+          "mono-sec-key": this.secretKey,
+        },
+        params: options,
+      });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error fetching transactions:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error fetching transactions from Mono");
+        console.error(
+          "Error fetching transactions:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error fetching transactions from Mono")
+        );
       }
       console.error("Error fetching transactions (unknown):", error);
-      throw new Error("An unknown error occurred while fetching transactions from Mono");
+      throw new Error(
+        "An unknown error occurred while fetching transactions from Mono"
+      );
     }
   }
 
@@ -190,7 +224,8 @@ class MonoService {
       period: string; // e.g. last3months, last6months, or specific range like 01-01-2020_31-01-2020
       output?: "json" | "pdf";
     }
-  ): Promise<any> { // Can be JSON data or ArrayBuffer for PDF
+  ): Promise<any> {
+    // Can be JSON data or ArrayBuffer for PDF
     try {
       const response = await axios.get(
         `${MONO_API_URL}/accounts/${accountId}/statement`,
@@ -206,11 +241,19 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error fetching statement:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error fetching statement from Mono");
+        console.error(
+          "Error fetching statement:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error fetching statement from Mono")
+        );
       }
       console.error("Error fetching statement (unknown):", error);
-      throw new Error("An unknown error occurred while fetching statement from Mono");
+      throw new Error(
+        "An unknown error occurred while fetching statement from Mono"
+      );
     }
   }
 
@@ -219,14 +262,16 @@ class MonoService {
    * The Mono documentation should clarify the exact request body and response.
    * This might initiate the reauth flow, and the user would complete it on the Mono widget.
    */
-  async reauthorizeAccount(accountId: string): Promise<{ token: string; [key: string]: any }> {
+  async reauthorizeAccount(
+    accountId: string
+  ): Promise<{ token: string; [key: string]: any }> {
     try {
       const response = await axios.post<{ token: string; [key: string]: any }>(
         // Note: The endpoint might be /reauthorise or /reauthorize. Using /reauthorize based on common spelling.
         // Also, some reauth flows might require a POST to /accounts/{ACCOUNT_ID}/reauthorise
         // and then the user uses the reauth_token with Mono Connect.
         // For now, assuming this endpoint initiates and returns a token for the widget.
-        `${MONO_API_URL}/accounts/${accountId}/reauthorize`, 
+        `${MONO_API_URL}/accounts/${accountId}/reauthorize`,
         {}, // Body might be required depending on Mono's specific API for this
         {
           headers: {
@@ -238,24 +283,38 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error reauthorizing account:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error reauthorizing account with Mono");
+        console.error(
+          "Error reauthorizing account:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error reauthorizing account with Mono")
+        );
       }
       console.error("Error reauthorizing account (unknown):", error);
-      throw new Error("An unknown error occurred while reauthorizing account with Mono");
+      throw new Error(
+        "An unknown error occurred while reauthorizing account with Mono"
+      );
     }
   }
-  
+
   /**
    * Poll for reauthorization status using a reauth_token obtained from the reauthorization process.
    * This is useful if the reauthorization is an asynchronous process.
    */
-  async pollReauthorizationStatus(reauthToken: string): Promise<{ status: string; code?: string; [key: string]: any }> {
+  async pollReauthorizationStatus(
+    reauthToken: string
+  ): Promise<{ status: string; code?: string; [key: string]: any }> {
     try {
       // The endpoint for polling might be different, e.g., /account/reauthorise/status or similar.
       // Using a plausible endpoint based on the original service file.
       // Mono's official documentation is the source of truth here.
-      const response = await axios.get<{ status: string; code?: string; [key: string]: any }>(
+      const response = await axios.get<{
+        status: string;
+        code?: string;
+        [key: string]: any;
+      }>(
         `${MONO_API_URL}/accounts/reauthorise/${reauthToken}`, // This endpoint might need verification from Mono docs
         {
           headers: {
@@ -269,20 +328,33 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error polling reauthorization status:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error polling reauthorization status from Mono");
+        console.error(
+          "Error polling reauthorization status:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error polling reauthorization status from Mono")
+        );
       }
       console.error("Error polling reauthorization status (unknown):", error);
-      throw new Error("An unknown error occurred while polling reauthorization status from Mono");
+      throw new Error(
+        "An unknown error occurred while polling reauthorization status from Mono"
+      );
     }
   }
 
   /**
    * Unlink an account
    */
-  async unlinkAccount(accountId: string): Promise<{ message?: string; [key: string]: any }> {
+  async unlinkAccount(
+    accountId: string
+  ): Promise<{ message?: string; [key: string]: any }> {
     try {
-      const response = await axios.post<{ message?: string; [key: string]: any }>(
+      const response = await axios.post<{
+        message?: string;
+        [key: string]: any;
+      }>(
         `${MONO_API_URL}/accounts/${accountId}/unlink`,
         {},
         {
@@ -295,20 +367,29 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error unlinking account:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error unlinking account with Mono");
+        console.error(
+          "Error unlinking account:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data || new Error("Error unlinking account with Mono")
+        );
       }
       console.error("Error unlinking account (unknown):", error);
-      throw new Error("An unknown error occurred while unlinking account with Mono");
+      throw new Error(
+        "An unknown error occurred while unlinking account with Mono"
+      );
     }
   }
 
   /**
    * Get available financial institutions
    */
-  async getInstitutions(): Promise<any[]> { // Replace 'any' with a proper Institution interface if available
+  async getInstitutions(): Promise<any[]> {
+    // Replace 'any' with a proper Institution interface if available
     try {
-      const response = await axios.get<any[]>(`${MONO_API_URL}/institutions`, { // Endpoint changed to /institutions from /coverage
+      const response = await axios.get<any[]>(`${MONO_API_URL}/institutions`, {
+        // Endpoint changed to /institutions from /coverage
         headers: {
           // "Content-Type": "application/json", // Not always needed for GET
           // "mono-sec-key": this.secretKey, // Public key might be used here, or no key for public data
@@ -317,11 +398,19 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error fetching institutions:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error fetching institutions from Mono");
+        console.error(
+          "Error fetching institutions:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data ||
+          new Error("Error fetching institutions from Mono")
+        );
       }
       console.error("Error fetching institutions (unknown):", error);
-      throw new Error("An unknown error occurred while fetching institutions from Mono");
+      throw new Error(
+        "An unknown error occurred while fetching institutions from Mono"
+      );
     }
   }
 
@@ -329,9 +418,15 @@ class MonoService {
    * Sync an account (Trigger manual account refresh)
    * @param accountId Mono Account ID
    */
-  async syncAccount(accountId: string): Promise<{ status: string; message?: string; code?: string }> {
+  async syncAccount(
+    accountId: string
+  ): Promise<{ status: string; message?: string; code?: string }> {
     try {
-      const response = await axios.post<{ status: string; message?: string; code?: string }>(
+      const response = await axios.post<{
+        status: string;
+        message?: string;
+        code?: string;
+      }>(
         `${MONO_API_URL}/accounts/${accountId}/sync`,
         {},
         {
@@ -346,11 +441,18 @@ class MonoService {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error syncing account:", error.response?.data || error.message);
-        throw error.response?.data || new Error("Error syncing account with Mono");
+        console.error(
+          "Error syncing account:",
+          error.response?.data || error.message
+        );
+        throw (
+          error.response?.data || new Error("Error syncing account with Mono")
+        );
       }
       console.error("Error syncing account (unknown):", error);
-      throw new Error("An unknown error occurred while syncing account with Mono");
+      throw new Error(
+        "An unknown error occurred while syncing account with Mono"
+      );
     }
   }
 
@@ -362,7 +464,9 @@ class MonoService {
   verifyWebhookSignature(signature: string, payload: string): boolean {
     const webhookSecret = process.env.MONO_WEBHOOK_SECRET;
     if (!webhookSecret) {
-      console.error("MONO_WEBHOOK_SECRET is not set. Cannot verify webhook signature.");
+      console.error(
+        "MONO_WEBHOOK_SECRET is not set. Cannot verify webhook signature."
+      );
       return false; // Or throw an error, depending on desired strictness
     }
     // Mono's documentation should specify the exact signature verification method.
@@ -375,8 +479,10 @@ class MonoService {
     // return hash === signature;
     // For now, if the header matches the secret directly (less secure, but for placeholder)
     // IMPORTANT: Replace with actual HMAC verification as per Mono's docs.
-    console.warn("Using placeholder webhook signature verification. Implement HMAC SHA512 verification.");
-    return signature === webhookSecret; 
+    console.warn(
+      "Using placeholder webhook signature verification. Implement HMAC SHA512 verification."
+    );
+    return signature === webhookSecret;
   }
 }
 
