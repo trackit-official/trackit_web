@@ -107,10 +107,15 @@ model BankAccount {
   lastSynced      DateTime?
 
   // Mono integration fields
-  monoId          String?   @unique // Mono account ID
-  monoAccountId   String?   // Mono account identification
-  monoAccessToken String?   @db.Text
-  monoReauthToken String?   @db.Text
+  monoId          String?   @unique // Mono account ID from exchangeToken (auth.id)
+  // monoAccountId   String?   // This is likely redundant if monoId is the main identifier from Mono
+  accountHolderName String?   // From Mono Identity
+  bvn             String?   // From Mono Identity
+  status          String?   // e.g., ACTIVE, REAUTH_REQUIRED, SYNCED, UNLINKED, SYNC_FAILED
+  monoDataStatus  String?   // From Mono meta.data_status (e.g., AVAILABLE, PROCESSING, FAILED)
+  authMethod      String?   // From Mono meta.auth_method (e.g., internet_banking, mobile_banking)
+  // monoAccessToken String?   @db.Text // Initial code from widget; consider if needed long-term
+  monoReauthToken String?   @db.Text // For re-initiating Mono Connect for re-authentication
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -124,18 +129,18 @@ model BankAccount {
 model Transaction {
   id              String    @id @default(cuid())
   userId          String
-  accountId       String
+  accountId       String    // Internal BankAccount ID
   amount          Float
   type            TransactionType
-  description     String
-  category        String?
+  narration       String    // Changed from description to match Mono
+  category        String?   // Category from Mono or user-defined
   reference       String?
   date            DateTime
-  balance         Float?
+  balanceAfter    Float?    // Renamed from balance for clarity, balance after this transaction
   currency        String    @default("NGN")
 
-  // For duplicate prevention
-  externalId      String?   @unique // ID from bank/Mono
+  // For duplicate prevention & linking to Mono transaction
+  monoTransactionId String?   @unique // Unique ID from Mono (tx._id), was externalId
 
   // Transaction metadata
   metadata        Json?

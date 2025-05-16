@@ -7626,8 +7626,11 @@ export namespace Prisma {
     isActive: boolean | null
     lastSynced: Date | null
     monoId: string | null
-    monoAccountId: string | null
-    monoAccessToken: string | null
+    accountHolderName: string | null
+    bvn: string | null
+    status: string | null
+    monoDataStatus: string | null
+    authMethod: string | null
     monoReauthToken: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7644,8 +7647,11 @@ export namespace Prisma {
     isActive: boolean | null
     lastSynced: Date | null
     monoId: string | null
-    monoAccountId: string | null
-    monoAccessToken: string | null
+    accountHolderName: string | null
+    bvn: string | null
+    status: string | null
+    monoDataStatus: string | null
+    authMethod: string | null
     monoReauthToken: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7662,8 +7668,11 @@ export namespace Prisma {
     isActive: number
     lastSynced: number
     monoId: number
-    monoAccountId: number
-    monoAccessToken: number
+    accountHolderName: number
+    bvn: number
+    status: number
+    monoDataStatus: number
+    authMethod: number
     monoReauthToken: number
     createdAt: number
     updatedAt: number
@@ -7690,8 +7699,11 @@ export namespace Prisma {
     isActive?: true
     lastSynced?: true
     monoId?: true
-    monoAccountId?: true
-    monoAccessToken?: true
+    accountHolderName?: true
+    bvn?: true
+    status?: true
+    monoDataStatus?: true
+    authMethod?: true
     monoReauthToken?: true
     createdAt?: true
     updatedAt?: true
@@ -7708,8 +7720,11 @@ export namespace Prisma {
     isActive?: true
     lastSynced?: true
     monoId?: true
-    monoAccountId?: true
-    monoAccessToken?: true
+    accountHolderName?: true
+    bvn?: true
+    status?: true
+    monoDataStatus?: true
+    authMethod?: true
     monoReauthToken?: true
     createdAt?: true
     updatedAt?: true
@@ -7726,8 +7741,11 @@ export namespace Prisma {
     isActive?: true
     lastSynced?: true
     monoId?: true
-    monoAccountId?: true
-    monoAccessToken?: true
+    accountHolderName?: true
+    bvn?: true
+    status?: true
+    monoDataStatus?: true
+    authMethod?: true
     monoReauthToken?: true
     createdAt?: true
     updatedAt?: true
@@ -7831,8 +7849,11 @@ export namespace Prisma {
     isActive: boolean
     lastSynced: Date | null
     monoId: string | null
-    monoAccountId: string | null
-    monoAccessToken: string | null
+    accountHolderName: string | null
+    bvn: string | null
+    status: string | null
+    monoDataStatus: string | null
+    authMethod: string | null
     monoReauthToken: string | null
     createdAt: Date
     updatedAt: Date
@@ -7868,8 +7889,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: boolean
     monoId?: boolean
-    monoAccountId?: boolean
-    monoAccessToken?: boolean
+    accountHolderName?: boolean
+    bvn?: boolean
+    status?: boolean
+    monoDataStatus?: boolean
+    authMethod?: boolean
     monoReauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7889,8 +7913,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: boolean
     monoId?: boolean
-    monoAccountId?: boolean
-    monoAccessToken?: boolean
+    accountHolderName?: boolean
+    bvn?: boolean
+    status?: boolean
+    monoDataStatus?: boolean
+    authMethod?: boolean
     monoReauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7908,8 +7935,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: boolean
     monoId?: boolean
-    monoAccountId?: boolean
-    monoAccessToken?: boolean
+    accountHolderName?: boolean
+    bvn?: boolean
+    status?: boolean
+    monoDataStatus?: boolean
+    authMethod?: boolean
     monoReauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7927,14 +7957,17 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: boolean
     monoId?: boolean
-    monoAccountId?: boolean
-    monoAccessToken?: boolean
+    accountHolderName?: boolean
+    bvn?: boolean
+    status?: boolean
+    monoDataStatus?: boolean
+    authMethod?: boolean
     monoReauthToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BankAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "accountName" | "accountNumber" | "bankName" | "balance" | "currency" | "isActive" | "lastSynced" | "monoId" | "monoAccountId" | "monoAccessToken" | "monoReauthToken" | "createdAt" | "updatedAt", ExtArgs["result"]["bankAccount"]>
+  export type BankAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "accountName" | "accountNumber" | "bankName" | "balance" | "currency" | "isActive" | "lastSynced" | "monoId" | "accountHolderName" | "bvn" | "status" | "monoDataStatus" | "authMethod" | "monoReauthToken" | "createdAt" | "updatedAt", ExtArgs["result"]["bankAccount"]>
   export type BankAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | BankAccount$transactionsArgs<ExtArgs>
@@ -7964,8 +7997,11 @@ export namespace Prisma {
       isActive: boolean
       lastSynced: Date | null
       monoId: string | null
-      monoAccountId: string | null
-      monoAccessToken: string | null
+      accountHolderName: string | null
+      bvn: string | null
+      status: string | null
+      monoDataStatus: string | null
+      authMethod: string | null
       monoReauthToken: string | null
       createdAt: Date
       updatedAt: Date
@@ -8404,8 +8440,11 @@ export namespace Prisma {
     readonly isActive: FieldRef<"BankAccount", 'Boolean'>
     readonly lastSynced: FieldRef<"BankAccount", 'DateTime'>
     readonly monoId: FieldRef<"BankAccount", 'String'>
-    readonly monoAccountId: FieldRef<"BankAccount", 'String'>
-    readonly monoAccessToken: FieldRef<"BankAccount", 'String'>
+    readonly accountHolderName: FieldRef<"BankAccount", 'String'>
+    readonly bvn: FieldRef<"BankAccount", 'String'>
+    readonly status: FieldRef<"BankAccount", 'String'>
+    readonly monoDataStatus: FieldRef<"BankAccount", 'String'>
+    readonly authMethod: FieldRef<"BankAccount", 'String'>
     readonly monoReauthToken: FieldRef<"BankAccount", 'String'>
     readonly createdAt: FieldRef<"BankAccount", 'DateTime'>
     readonly updatedAt: FieldRef<"BankAccount", 'DateTime'>
@@ -8861,12 +8900,12 @@ export namespace Prisma {
 
   export type TransactionAvgAggregateOutputType = {
     amount: number | null
-    balance: number | null
+    balanceAfter: number | null
   }
 
   export type TransactionSumAggregateOutputType = {
     amount: number | null
-    balance: number | null
+    balanceAfter: number | null
   }
 
   export type TransactionMinAggregateOutputType = {
@@ -8875,13 +8914,13 @@ export namespace Prisma {
     accountId: string | null
     amount: number | null
     type: $Enums.TransactionType | null
-    description: string | null
+    narration: string | null
     category: string | null
     reference: string | null
     date: Date | null
-    balance: number | null
+    balanceAfter: number | null
     currency: string | null
-    externalId: string | null
+    monoTransactionId: string | null
     notes: string | null
     categoryId: string | null
     createdAt: Date | null
@@ -8894,13 +8933,13 @@ export namespace Prisma {
     accountId: string | null
     amount: number | null
     type: $Enums.TransactionType | null
-    description: string | null
+    narration: string | null
     category: string | null
     reference: string | null
     date: Date | null
-    balance: number | null
+    balanceAfter: number | null
     currency: string | null
-    externalId: string | null
+    monoTransactionId: string | null
     notes: string | null
     categoryId: string | null
     createdAt: Date | null
@@ -8913,13 +8952,13 @@ export namespace Prisma {
     accountId: number
     amount: number
     type: number
-    description: number
+    narration: number
     category: number
     reference: number
     date: number
-    balance: number
+    balanceAfter: number
     currency: number
-    externalId: number
+    monoTransactionId: number
     metadata: number
     notes: number
     tags: number
@@ -8932,12 +8971,12 @@ export namespace Prisma {
 
   export type TransactionAvgAggregateInputType = {
     amount?: true
-    balance?: true
+    balanceAfter?: true
   }
 
   export type TransactionSumAggregateInputType = {
     amount?: true
-    balance?: true
+    balanceAfter?: true
   }
 
   export type TransactionMinAggregateInputType = {
@@ -8946,13 +8985,13 @@ export namespace Prisma {
     accountId?: true
     amount?: true
     type?: true
-    description?: true
+    narration?: true
     category?: true
     reference?: true
     date?: true
-    balance?: true
+    balanceAfter?: true
     currency?: true
-    externalId?: true
+    monoTransactionId?: true
     notes?: true
     categoryId?: true
     createdAt?: true
@@ -8965,13 +9004,13 @@ export namespace Prisma {
     accountId?: true
     amount?: true
     type?: true
-    description?: true
+    narration?: true
     category?: true
     reference?: true
     date?: true
-    balance?: true
+    balanceAfter?: true
     currency?: true
-    externalId?: true
+    monoTransactionId?: true
     notes?: true
     categoryId?: true
     createdAt?: true
@@ -8984,13 +9023,13 @@ export namespace Prisma {
     accountId?: true
     amount?: true
     type?: true
-    description?: true
+    narration?: true
     category?: true
     reference?: true
     date?: true
-    balance?: true
+    balanceAfter?: true
     currency?: true
-    externalId?: true
+    monoTransactionId?: true
     metadata?: true
     notes?: true
     tags?: true
@@ -9092,13 +9131,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category: string | null
     reference: string | null
     date: Date
-    balance: number | null
+    balanceAfter: number | null
     currency: string
-    externalId: string | null
+    monoTransactionId: string | null
     metadata: JsonValue | null
     notes: string | null
     tags: string[]
@@ -9132,13 +9171,13 @@ export namespace Prisma {
     accountId?: boolean
     amount?: boolean
     type?: boolean
-    description?: boolean
+    narration?: boolean
     category?: boolean
     reference?: boolean
     date?: boolean
-    balance?: boolean
+    balanceAfter?: boolean
     currency?: boolean
-    externalId?: boolean
+    monoTransactionId?: boolean
     metadata?: boolean
     notes?: boolean
     tags?: boolean
@@ -9156,13 +9195,13 @@ export namespace Prisma {
     accountId?: boolean
     amount?: boolean
     type?: boolean
-    description?: boolean
+    narration?: boolean
     category?: boolean
     reference?: boolean
     date?: boolean
-    balance?: boolean
+    balanceAfter?: boolean
     currency?: boolean
-    externalId?: boolean
+    monoTransactionId?: boolean
     metadata?: boolean
     notes?: boolean
     tags?: boolean
@@ -9180,13 +9219,13 @@ export namespace Prisma {
     accountId?: boolean
     amount?: boolean
     type?: boolean
-    description?: boolean
+    narration?: boolean
     category?: boolean
     reference?: boolean
     date?: boolean
-    balance?: boolean
+    balanceAfter?: boolean
     currency?: boolean
-    externalId?: boolean
+    monoTransactionId?: boolean
     metadata?: boolean
     notes?: boolean
     tags?: boolean
@@ -9204,13 +9243,13 @@ export namespace Prisma {
     accountId?: boolean
     amount?: boolean
     type?: boolean
-    description?: boolean
+    narration?: boolean
     category?: boolean
     reference?: boolean
     date?: boolean
-    balance?: boolean
+    balanceAfter?: boolean
     currency?: boolean
-    externalId?: boolean
+    monoTransactionId?: boolean
     metadata?: boolean
     notes?: boolean
     tags?: boolean
@@ -9219,7 +9258,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "accountId" | "amount" | "type" | "description" | "category" | "reference" | "date" | "balance" | "currency" | "externalId" | "metadata" | "notes" | "tags" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "accountId" | "amount" | "type" | "narration" | "category" | "reference" | "date" | "balanceAfter" | "currency" | "monoTransactionId" | "metadata" | "notes" | "tags" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | BankAccountDefaultArgs<ExtArgs>
@@ -9249,13 +9288,13 @@ export namespace Prisma {
       accountId: string
       amount: number
       type: $Enums.TransactionType
-      description: string
+      narration: string
       category: string | null
       reference: string | null
       date: Date
-      balance: number | null
+      balanceAfter: number | null
       currency: string
-      externalId: string | null
+      monoTransactionId: string | null
       metadata: Prisma.JsonValue | null
       notes: string | null
       tags: string[]
@@ -9693,13 +9732,13 @@ export namespace Prisma {
     readonly accountId: FieldRef<"Transaction", 'String'>
     readonly amount: FieldRef<"Transaction", 'Float'>
     readonly type: FieldRef<"Transaction", 'TransactionType'>
-    readonly description: FieldRef<"Transaction", 'String'>
+    readonly narration: FieldRef<"Transaction", 'String'>
     readonly category: FieldRef<"Transaction", 'String'>
     readonly reference: FieldRef<"Transaction", 'String'>
     readonly date: FieldRef<"Transaction", 'DateTime'>
-    readonly balance: FieldRef<"Transaction", 'Float'>
+    readonly balanceAfter: FieldRef<"Transaction", 'Float'>
     readonly currency: FieldRef<"Transaction", 'String'>
-    readonly externalId: FieldRef<"Transaction", 'String'>
+    readonly monoTransactionId: FieldRef<"Transaction", 'String'>
     readonly metadata: FieldRef<"Transaction", 'Json'>
     readonly notes: FieldRef<"Transaction", 'String'>
     readonly tags: FieldRef<"Transaction", 'String[]'>
@@ -13640,8 +13679,11 @@ export namespace Prisma {
     isActive: 'isActive',
     lastSynced: 'lastSynced',
     monoId: 'monoId',
-    monoAccountId: 'monoAccountId',
-    monoAccessToken: 'monoAccessToken',
+    accountHolderName: 'accountHolderName',
+    bvn: 'bvn',
+    status: 'status',
+    monoDataStatus: 'monoDataStatus',
+    authMethod: 'authMethod',
     monoReauthToken: 'monoReauthToken',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -13656,13 +13698,13 @@ export namespace Prisma {
     accountId: 'accountId',
     amount: 'amount',
     type: 'type',
-    description: 'description',
+    narration: 'narration',
     category: 'category',
     reference: 'reference',
     date: 'date',
-    balance: 'balance',
+    balanceAfter: 'balanceAfter',
     currency: 'currency',
-    externalId: 'externalId',
+    monoTransactionId: 'monoTransactionId',
     metadata: 'metadata',
     notes: 'notes',
     tags: 'tags',
@@ -14282,8 +14324,11 @@ export namespace Prisma {
     isActive?: BoolFilter<"BankAccount"> | boolean
     lastSynced?: DateTimeNullableFilter<"BankAccount"> | Date | string | null
     monoId?: StringNullableFilter<"BankAccount"> | string | null
-    monoAccountId?: StringNullableFilter<"BankAccount"> | string | null
-    monoAccessToken?: StringNullableFilter<"BankAccount"> | string | null
+    accountHolderName?: StringNullableFilter<"BankAccount"> | string | null
+    bvn?: StringNullableFilter<"BankAccount"> | string | null
+    status?: StringNullableFilter<"BankAccount"> | string | null
+    monoDataStatus?: StringNullableFilter<"BankAccount"> | string | null
+    authMethod?: StringNullableFilter<"BankAccount"> | string | null
     monoReauthToken?: StringNullableFilter<"BankAccount"> | string | null
     createdAt?: DateTimeFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
@@ -14302,8 +14347,11 @@ export namespace Prisma {
     isActive?: SortOrder
     lastSynced?: SortOrderInput | SortOrder
     monoId?: SortOrderInput | SortOrder
-    monoAccountId?: SortOrderInput | SortOrder
-    monoAccessToken?: SortOrderInput | SortOrder
+    accountHolderName?: SortOrderInput | SortOrder
+    bvn?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    monoDataStatus?: SortOrderInput | SortOrder
+    authMethod?: SortOrderInput | SortOrder
     monoReauthToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14325,8 +14373,11 @@ export namespace Prisma {
     currency?: StringFilter<"BankAccount"> | string
     isActive?: BoolFilter<"BankAccount"> | boolean
     lastSynced?: DateTimeNullableFilter<"BankAccount"> | Date | string | null
-    monoAccountId?: StringNullableFilter<"BankAccount"> | string | null
-    monoAccessToken?: StringNullableFilter<"BankAccount"> | string | null
+    accountHolderName?: StringNullableFilter<"BankAccount"> | string | null
+    bvn?: StringNullableFilter<"BankAccount"> | string | null
+    status?: StringNullableFilter<"BankAccount"> | string | null
+    monoDataStatus?: StringNullableFilter<"BankAccount"> | string | null
+    authMethod?: StringNullableFilter<"BankAccount"> | string | null
     monoReauthToken?: StringNullableFilter<"BankAccount"> | string | null
     createdAt?: DateTimeFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
@@ -14345,8 +14396,11 @@ export namespace Prisma {
     isActive?: SortOrder
     lastSynced?: SortOrderInput | SortOrder
     monoId?: SortOrderInput | SortOrder
-    monoAccountId?: SortOrderInput | SortOrder
-    monoAccessToken?: SortOrderInput | SortOrder
+    accountHolderName?: SortOrderInput | SortOrder
+    bvn?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    monoDataStatus?: SortOrderInput | SortOrder
+    authMethod?: SortOrderInput | SortOrder
     monoReauthToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14371,8 +14425,11 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"BankAccount"> | boolean
     lastSynced?: DateTimeNullableWithAggregatesFilter<"BankAccount"> | Date | string | null
     monoId?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
-    monoAccountId?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
-    monoAccessToken?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
+    accountHolderName?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
+    bvn?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
+    status?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
+    monoDataStatus?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
+    authMethod?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
     monoReauthToken?: StringNullableWithAggregatesFilter<"BankAccount"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BankAccount"> | Date | string
@@ -14387,13 +14444,13 @@ export namespace Prisma {
     accountId?: StringFilter<"Transaction"> | string
     amount?: FloatFilter<"Transaction"> | number
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-    description?: StringFilter<"Transaction"> | string
+    narration?: StringFilter<"Transaction"> | string
     category?: StringNullableFilter<"Transaction"> | string | null
     reference?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
-    balance?: FloatNullableFilter<"Transaction"> | number | null
+    balanceAfter?: FloatNullableFilter<"Transaction"> | number | null
     currency?: StringFilter<"Transaction"> | string
-    externalId?: StringNullableFilter<"Transaction"> | string | null
+    monoTransactionId?: StringNullableFilter<"Transaction"> | string | null
     metadata?: JsonNullableFilter<"Transaction">
     notes?: StringNullableFilter<"Transaction"> | string | null
     tags?: StringNullableListFilter<"Transaction">
@@ -14411,13 +14468,13 @@ export namespace Prisma {
     accountId?: SortOrder
     amount?: SortOrder
     type?: SortOrder
-    description?: SortOrder
+    narration?: SortOrder
     category?: SortOrderInput | SortOrder
     reference?: SortOrderInput | SortOrder
     date?: SortOrder
-    balance?: SortOrderInput | SortOrder
+    balanceAfter?: SortOrderInput | SortOrder
     currency?: SortOrder
-    externalId?: SortOrderInput | SortOrder
+    monoTransactionId?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     tags?: SortOrder
@@ -14431,7 +14488,7 @@ export namespace Prisma {
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    externalId?: string
+    monoTransactionId?: string
     AND?: TransactionWhereInput | TransactionWhereInput[]
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
@@ -14439,11 +14496,11 @@ export namespace Prisma {
     accountId?: StringFilter<"Transaction"> | string
     amount?: FloatFilter<"Transaction"> | number
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-    description?: StringFilter<"Transaction"> | string
+    narration?: StringFilter<"Transaction"> | string
     category?: StringNullableFilter<"Transaction"> | string | null
     reference?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
-    balance?: FloatNullableFilter<"Transaction"> | number | null
+    balanceAfter?: FloatNullableFilter<"Transaction"> | number | null
     currency?: StringFilter<"Transaction"> | string
     metadata?: JsonNullableFilter<"Transaction">
     notes?: StringNullableFilter<"Transaction"> | string | null
@@ -14454,7 +14511,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<BankAccountScalarRelationFilter, BankAccountWhereInput>
     transactionCategory?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
-  }, "id" | "externalId">
+  }, "id" | "monoTransactionId">
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14462,13 +14519,13 @@ export namespace Prisma {
     accountId?: SortOrder
     amount?: SortOrder
     type?: SortOrder
-    description?: SortOrder
+    narration?: SortOrder
     category?: SortOrderInput | SortOrder
     reference?: SortOrderInput | SortOrder
     date?: SortOrder
-    balance?: SortOrderInput | SortOrder
+    balanceAfter?: SortOrderInput | SortOrder
     currency?: SortOrder
-    externalId?: SortOrderInput | SortOrder
+    monoTransactionId?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     tags?: SortOrder
@@ -14491,13 +14548,13 @@ export namespace Prisma {
     accountId?: StringWithAggregatesFilter<"Transaction"> | string
     amount?: FloatWithAggregatesFilter<"Transaction"> | number
     type?: EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
-    description?: StringWithAggregatesFilter<"Transaction"> | string
+    narration?: StringWithAggregatesFilter<"Transaction"> | string
     category?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     reference?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     date?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
-    balance?: FloatNullableWithAggregatesFilter<"Transaction"> | number | null
+    balanceAfter?: FloatNullableWithAggregatesFilter<"Transaction"> | number | null
     currency?: StringWithAggregatesFilter<"Transaction"> | string
-    externalId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    monoTransactionId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     metadata?: JsonNullableWithAggregatesFilter<"Transaction">
     notes?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     tags?: StringNullableListFilter<"Transaction">
@@ -15203,8 +15260,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15223,8 +15283,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15241,8 +15304,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15261,8 +15327,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15280,8 +15349,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15297,8 +15369,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15315,8 +15390,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15326,13 +15404,13 @@ export namespace Prisma {
     id?: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -15349,13 +15427,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -15368,13 +15446,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -15391,13 +15469,13 @@ export namespace Prisma {
     accountId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -15412,13 +15490,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -15431,13 +15509,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -15451,13 +15529,13 @@ export namespace Prisma {
     accountId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -16276,8 +16354,11 @@ export namespace Prisma {
     isActive?: SortOrder
     lastSynced?: SortOrder
     monoId?: SortOrder
-    monoAccountId?: SortOrder
-    monoAccessToken?: SortOrder
+    accountHolderName?: SortOrder
+    bvn?: SortOrder
+    status?: SortOrder
+    monoDataStatus?: SortOrder
+    authMethod?: SortOrder
     monoReauthToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16298,8 +16379,11 @@ export namespace Prisma {
     isActive?: SortOrder
     lastSynced?: SortOrder
     monoId?: SortOrder
-    monoAccountId?: SortOrder
-    monoAccessToken?: SortOrder
+    accountHolderName?: SortOrder
+    bvn?: SortOrder
+    status?: SortOrder
+    monoDataStatus?: SortOrder
+    authMethod?: SortOrder
     monoReauthToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16316,8 +16400,11 @@ export namespace Prisma {
     isActive?: SortOrder
     lastSynced?: SortOrder
     monoId?: SortOrder
-    monoAccountId?: SortOrder
-    monoAccessToken?: SortOrder
+    accountHolderName?: SortOrder
+    bvn?: SortOrder
+    status?: SortOrder
+    monoDataStatus?: SortOrder
+    authMethod?: SortOrder
     monoReauthToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16393,13 +16480,13 @@ export namespace Prisma {
     accountId?: SortOrder
     amount?: SortOrder
     type?: SortOrder
-    description?: SortOrder
+    narration?: SortOrder
     category?: SortOrder
     reference?: SortOrder
     date?: SortOrder
-    balance?: SortOrder
+    balanceAfter?: SortOrder
     currency?: SortOrder
-    externalId?: SortOrder
+    monoTransactionId?: SortOrder
     metadata?: SortOrder
     notes?: SortOrder
     tags?: SortOrder
@@ -16410,7 +16497,7 @@ export namespace Prisma {
 
   export type TransactionAvgOrderByAggregateInput = {
     amount?: SortOrder
-    balance?: SortOrder
+    balanceAfter?: SortOrder
   }
 
   export type TransactionMaxOrderByAggregateInput = {
@@ -16419,13 +16506,13 @@ export namespace Prisma {
     accountId?: SortOrder
     amount?: SortOrder
     type?: SortOrder
-    description?: SortOrder
+    narration?: SortOrder
     category?: SortOrder
     reference?: SortOrder
     date?: SortOrder
-    balance?: SortOrder
+    balanceAfter?: SortOrder
     currency?: SortOrder
-    externalId?: SortOrder
+    monoTransactionId?: SortOrder
     notes?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
@@ -16438,13 +16525,13 @@ export namespace Prisma {
     accountId?: SortOrder
     amount?: SortOrder
     type?: SortOrder
-    description?: SortOrder
+    narration?: SortOrder
     category?: SortOrder
     reference?: SortOrder
     date?: SortOrder
-    balance?: SortOrder
+    balanceAfter?: SortOrder
     currency?: SortOrder
-    externalId?: SortOrder
+    monoTransactionId?: SortOrder
     notes?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
@@ -16453,7 +16540,7 @@ export namespace Prisma {
 
   export type TransactionSumOrderByAggregateInput = {
     amount?: SortOrder
-    balance?: SortOrder
+    balanceAfter?: SortOrder
   }
 
   export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -17904,8 +17991,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17922,8 +18012,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17944,13 +18037,13 @@ export namespace Prisma {
     id?: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -17965,13 +18058,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -18183,8 +18276,11 @@ export namespace Prisma {
     isActive?: BoolFilter<"BankAccount"> | boolean
     lastSynced?: DateTimeNullableFilter<"BankAccount"> | Date | string | null
     monoId?: StringNullableFilter<"BankAccount"> | string | null
-    monoAccountId?: StringNullableFilter<"BankAccount"> | string | null
-    monoAccessToken?: StringNullableFilter<"BankAccount"> | string | null
+    accountHolderName?: StringNullableFilter<"BankAccount"> | string | null
+    bvn?: StringNullableFilter<"BankAccount"> | string | null
+    status?: StringNullableFilter<"BankAccount"> | string | null
+    monoDataStatus?: StringNullableFilter<"BankAccount"> | string | null
+    authMethod?: StringNullableFilter<"BankAccount"> | string | null
     monoReauthToken?: StringNullableFilter<"BankAccount"> | string | null
     createdAt?: DateTimeFilter<"BankAccount"> | Date | string
     updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
@@ -18215,13 +18311,13 @@ export namespace Prisma {
     accountId?: StringFilter<"Transaction"> | string
     amount?: FloatFilter<"Transaction"> | number
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-    description?: StringFilter<"Transaction"> | string
+    narration?: StringFilter<"Transaction"> | string
     category?: StringNullableFilter<"Transaction"> | string | null
     reference?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
-    balance?: FloatNullableFilter<"Transaction"> | number | null
+    balanceAfter?: FloatNullableFilter<"Transaction"> | number | null
     currency?: StringFilter<"Transaction"> | string
-    externalId?: StringNullableFilter<"Transaction"> | string | null
+    monoTransactionId?: StringNullableFilter<"Transaction"> | string | null
     metadata?: JsonNullableFilter<"Transaction">
     notes?: StringNullableFilter<"Transaction"> | string | null
     tags?: StringNullableListFilter<"Transaction">
@@ -18489,13 +18585,13 @@ export namespace Prisma {
     id?: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -18510,13 +18606,13 @@ export namespace Prisma {
     userId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -18689,8 +18785,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18708,8 +18807,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18841,8 +18943,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18860,8 +18965,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18971,13 +19079,13 @@ export namespace Prisma {
     id?: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -18993,13 +19101,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -19391,8 +19499,11 @@ export namespace Prisma {
     isActive?: boolean
     lastSynced?: Date | string | null
     monoId?: string | null
-    monoAccountId?: string | null
-    monoAccessToken?: string | null
+    accountHolderName?: string | null
+    bvn?: string | null
+    status?: string | null
+    monoDataStatus?: string | null
+    authMethod?: string | null
     monoReauthToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19403,13 +19514,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -19535,8 +19646,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19553,8 +19667,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19571,8 +19688,11 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     lastSynced?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     monoId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccountId?: NullableStringFieldUpdateOperationsInput | string | null
-    monoAccessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    accountHolderName?: NullableStringFieldUpdateOperationsInput | string | null
+    bvn?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    monoDataStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
     monoReauthToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19582,13 +19702,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19603,13 +19723,13 @@ export namespace Prisma {
     accountId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19623,13 +19743,13 @@ export namespace Prisma {
     accountId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19725,13 +19845,13 @@ export namespace Prisma {
     userId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -19744,13 +19864,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19765,13 +19885,13 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19785,13 +19905,13 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19806,13 +19926,13 @@ export namespace Prisma {
     accountId: string
     amount: number
     type: $Enums.TransactionType
-    description: string
+    narration: string
     category?: string | null
     reference?: string | null
     date: Date | string
-    balance?: number | null
+    balanceAfter?: number | null
     currency?: string
-    externalId?: string | null
+    monoTransactionId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: string | null
     tags?: TransactionCreatetagsInput | string[]
@@ -19838,13 +19958,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19860,13 +19980,13 @@ export namespace Prisma {
     accountId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]
@@ -19880,13 +20000,13 @@ export namespace Prisma {
     accountId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    description?: StringFieldUpdateOperationsInput | string
+    narration?: StringFieldUpdateOperationsInput | string
     category?: NullableStringFieldUpdateOperationsInput | string | null
     reference?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
-    balance?: NullableFloatFieldUpdateOperationsInput | number | null
+    balanceAfter?: NullableFloatFieldUpdateOperationsInput | number | null
     currency?: StringFieldUpdateOperationsInput | string
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    monoTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: TransactionUpdatetagsInput | string[]

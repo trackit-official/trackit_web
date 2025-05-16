@@ -40,6 +40,20 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      if (token && session.user) {
+        (session.user as any).id = token.sub; // Add user ID from token.sub to session.user
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id; // Add user ID to the JWT token on sign-in
+      }
+      return token;
+    },
+  }, // Added missing comma here
   pages: {
     signIn: "/auth/signin",
     error: "/auth/signin",
